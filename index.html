@@ -113,34 +113,72 @@ function drawTerrain(){
  if(stageIndex===5){for(let i=0;i<9;i++){let x=((i*137-cam*.75)%(W+100)+W+100)%(W+100)-30;rect(x,ground-34,27,34,'#39344f');rect(x-4,ground-40,35,7,'#aaa0c8');rect(x+8,ground-52,11,12,'#655582')}}
 }
 function drawPlayer(){
- const p=player,x=p.x-cam,y=p.y;if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
- const moving=Math.abs(p.vx||0)>.1&&p.on,ph=p.anim*.42,stride=moving?Math.sin(ph):0,air=!p.on,punch=p.atk>0,bob=moving?Math.abs(Math.sin(ph*2))*1.8:0;
- const skin='#d99a70',edge='#302832';
- const rr=(x,y,w,h,r,c,stroke=edge)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=c;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=.8;ctx.stroke()};
- const glove=(x,y)=>{rr(x-5,y-4,11,10,4,'#b52f37','#581e2a');ctx.strokeStyle='#f27b76';ctx.beginPath();ctx.moveTo(x-2,y-2);ctx.lineTo(x+3,y-2);ctx.stroke()};
- ctx.save();ctx.translate(x+p.w/2,y+24+bob);ctx.scale((p.face||1)*1.28,1.28);
- ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,25,16,3,0,0,Math.PI*2);ctx.fill();
- if(p.dashTimer>0){ctx.strokeStyle='#b9eaff';ctx.lineWidth=2;for(let i=0;i<4;i++){ctx.beginPath();ctx.moveTo(-17-i*4,-8+i*6);ctx.lineTo(-30-i*4,-8+i*6);ctx.stroke()}}
- // Loose white gi trousers, animated legs
- for(let side of [-1,1]){ctx.save();ctx.translate(side*5,7);ctx.rotate(air?side*.32:-side*stride*.48);ctx.beginPath();ctx.moveTo(-4,0);ctx.lineTo(4,0);ctx.lineTo(6,14);ctx.lineTo(3,18);ctx.lineTo(-5,14);ctx.closePath();let g=ctx.createLinearGradient(-5,0,6,16);g.addColorStop(0,'#fffef4');g.addColorStop(.6,'#e6e4dc');g.addColorStop(1,'#a8abb5');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#514c55';ctx.stroke();ctx.strokeStyle='#c2c0c2';ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(2,12);ctx.stroke();ctx.restore()}
- // Rear arm: muscular, bare, red glove
- ctx.save();ctx.translate(-9,-10);ctx.rotate(punch?.35:-stride*.6);ctx.fillStyle=skin;ctx.beginPath();ctx.moveTo(-3,-3);ctx.quadraticCurveTo(-9,2,-6,9);ctx.quadraticCurveTo(-3,14,2,10);ctx.lineTo(4,3);ctx.lineTo(2,-3);ctx.closePath();ctx.fill();ctx.strokeStyle='#69443d';ctx.stroke();ctx.strokeStyle='#f2bc91';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-4,2);ctx.quadraticCurveTo(-1,5,-2,9);ctx.stroke();glove(-2,12);ctx.restore();
- // White gi jacket and open chest
- ctx.beginPath();ctx.moveTo(-9,-14);ctx.quadraticCurveTo(-13,-12,-11,-5);ctx.lineTo(-9,8);ctx.quadraticCurveTo(0,12,10,8);ctx.lineTo(11,-6);ctx.quadraticCurveTo(10,-14,7,-15);ctx.lineTo(2,-13);ctx.lineTo(-3,-13);ctx.closePath();
- let gi=ctx.createLinearGradient(-10,-14,10,10);gi.addColorStop(0,'#fffef5');gi.addColorStop(.5,'#e8e7df');gi.addColorStop(1,'#aeb2bd');ctx.fillStyle=gi;ctx.fill();ctx.strokeStyle='#4b4650';ctx.stroke();
- ctx.beginPath();ctx.moveTo(-5,-14);ctx.lineTo(0,-4);ctx.lineTo(5,-14);ctx.lineTo(2,-1);ctx.lineTo(-2,-1);ctx.closePath();ctx.fillStyle=skin;ctx.fill();ctx.strokeStyle='#765044';ctx.stroke();
- ctx.strokeStyle='#b7b5b6';ctx.beginPath();ctx.moveTo(-8,-5);ctx.quadraticCurveTo(-4,-1,-7,5);ctx.moveTo(8,-6);ctx.quadraticCurveTo(4,0,7,6);ctx.stroke();
- // Black belt and tied ends
- rr(-11,4,22,4,1,'#25242b','#111');ctx.fillStyle='#d8cdb5';ctx.fillRect(-2,4,4,4);ctx.beginPath();ctx.moveTo(-3,7);ctx.lineTo(-7,16);ctx.lineTo(-2,14);ctx.lineTo(0,7);ctx.fillStyle='#24232a';ctx.fill();
- // Front arm and glove, thrust forward during punch
- ctx.save();ctx.translate(9,-10);ctx.rotate(punch?-.95:stride*.55);ctx.fillStyle=skin;ctx.beginPath();ctx.moveTo(-1,-2);ctx.quadraticCurveTo(7,-5,8,2);ctx.quadraticCurveTo(10,8,5,12);ctx.lineTo(-1,10);ctx.closePath();ctx.fill();ctx.strokeStyle='#69443d';ctx.stroke();ctx.strokeStyle='#f3bd91';ctx.beginPath();ctx.moveTo(5,0);ctx.quadraticCurveTo(8,4,4,8);ctx.stroke();glove(4,12);ctx.restore();
- // Face, spiky dark hair
- rr(-3,-20,6,7,2,skin);let face=ctx.createRadialGradient(-3,-24,1,0,-19,10);face.addColorStop(0,'#ffdbb5');face.addColorStop(1,skin);ctx.fillStyle=face;ctx.beginPath();ctx.ellipse(0,-21,8.5,9.5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#49363a';ctx.stroke();
- ctx.fillStyle='#211f29';ctx.beginPath();ctx.moveTo(-9,-22);ctx.lineTo(-12,-29);ctx.lineTo(-6,-27);ctx.lineTo(-4,-34);ctx.lineTo(0,-29);ctx.lineTo(5,-34);ctx.lineTo(6,-28);ctx.lineTo(12,-30);ctx.lineTo(8,-21);ctx.lineTo(5,-17);ctx.lineTo(-6,-17);ctx.closePath();ctx.fill();
- // Red hachimaki with fluttering tails
- rr(-9,-26,18,3,1,'#b92d35','#641d2b');ctx.strokeStyle='#f48a79';ctx.beginPath();ctx.moveTo(-7,-25);ctx.lineTo(6,-25);ctx.stroke();
- ctx.fillStyle='#c33139';ctx.beginPath();ctx.moveTo(-8,-25);ctx.lineTo(-14,-20);ctx.lineTo(-12,-29);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(7,-25);ctx.lineTo(14,-31);ctx.lineTo(12,-22);ctx.lineTo(8,-21);ctx.fill();
- ctx.fillStyle='#211f29';ctx.fillRect(2,-22,2,1.5);ctx.strokeStyle='#3b2b30';ctx.beginPath();ctx.moveTo(1,-24);ctx.lineTo(5,-25);ctx.moveTo(1,-15);ctx.quadraticCurveTo(3,-14,5,-15);ctx.stroke();
+ const p=player,x=p.x-cam,y=p.y;
+ if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
+ const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/5)%2:0;
+ const air=!p.on,punch=p.atk>0;
+ // 64x64 pixel-art sprite, rendered with nearest-neighbour scaling
+ if(!drawPlayer.sprite){
+  const c=document.createElement('canvas');c.width=64;c.height=64;
+  const g=c.getContext('2d');g.imageSmoothingEnabled=false;
+  const P=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(x,y,w,h)};
+  const outline='#29232c',hair='#211d27',hairHi='#51404a',skin='#d99a70',skinHi='#f2bd91',skinShade='#9c604e';
+  const gi='#f4f0df',giHi='#fffdf4',giShade='#a9aab2',red='#b92f39',redHi='#f47772',black='#25232b',pants='#e9e6dc',shoe='#514b54';
+  // shadow-free transparent background; spiky hair and red headband
+  P(24,3,16,3,outline);P(20,6,25,5,hair);P(18,10,29,4,hair);P(20,14,26,4,hair);
+  P(18,5,5,6,hair);P(22,1,5,7,hair);P(32,0,5,8,hair);P(42,4,6,7,hair);
+  P(23,7,3,2,hairHi);P(34,4,4,2,hairHi);
+  // face, ears, determined eyes
+  P(22,13,25,15,skinShade);P(24,12,21,15,skin);P(27,13,15,11,skinHi);
+  P(20,18,4,5,skin);P(44,18,4,5,skinShade);
+  P(36,19,3,2,outline);P(42,19,3,2,outline);P(36,22,2,2,skinShade);P(41,24,4,1,outline);
+  // red hachimaki and long fluttering tails
+  P(20,11,28,4,red);P(17,14,7,3,red);P(13,16,9,3,redHi);P(11,19,9,2,red);
+  P(44,13,8,3,red);P(49,10,7,3,redHi);P(52,8,7,3,red);
+  P(25,12,17,1,redHi);
+  // neck
+  P(30,26,12,6,skin);P(32,27,7,3,skinHi);
+  // rear arm and fist
+  P(12,28,9,5,skinShade);P(10,32,10,12,skin);P(12,35,6,6,skinHi);
+  P(8,41,12,7,red);P(7,40,13,4,outline);P(10,42,8,2,redHi);
+  // gi torso with open V neckline
+  P(21,29,27,4,outline);P(19,32,31,17,giShade);P(21,31,27,16,gi);
+  P(23,32,8,13,giHi);P(39,32,7,13,giHi);
+  P(30,30,4,11,skin);P(34,30,4,11,skinHi);
+  P(28,31,5,7,giShade);P(35,31,5,7,giShade);
+  P(21,45,27,5,black);P(30,45,8,5,'#d7cbb2');P(32,50,4,3,black);
+  // front muscular arm, bent guard and red glove
+  P(45,32,8,5,skinShade);P(48,35,7,9,skin);P(45,39,8,7,skinHi);
+  P(49,44,12,6,red);P(48,43,13,4,outline);P(52,45,7,2,redHi);
+  // loose white trousers with folds
+  P(22,49,11,4,pants);P(37,49,11,4,pants);P(22,52,10,5,giShade);P(38,52,10,5,giShade);
+  P(21,55,9,5,pants);P(40,55,9,5,pants);
+  // legs, alternating pixel-art stride frames
+  if(frame===0){
+   P(21,57,9,3,pants);P(18,59,10,3,pants);P(16,61,10,2,shoe);
+   P(39,57,9,3,pants);P(42,59,9,3,pants);P(45,61,10,2,shoe);
+   P(14,61,12,2,'#c8c5c4');P(44,61,12,2,'#c8c5c4');
+  }else{
+   P(20,57,9,3,pants);P(23,59,10,3,pants);P(25,61,10,2,shoe);
+   P(40,57,9,3,pants);P(37,59,9,3,pants);P(34,61,10,2,shoe);
+   P(23,61,12,2,'#c8c5c4');P(33,61,12,2,'#c8c5c4');
+  }
+  // gi seams, folds, belt and shoe highlights
+  P(23,37,2,8,giShade);P(43,37,2,8,giShade);P(26,48,18,2,black);
+  P(27,34,2,5,giHi);P(40,35,2,4,giHi);
+  P(17,62,8,1,'#fff');P(46,62,8,1,'#fff');
+  // punch pose: extend foreground fist to the right
+  drawPlayer.sprite=c;
+ }
+ const destW=48,destH=48;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x+p.w/2,y+p.h+1,17,3,0,0,Math.PI*2);ctx.fill();
+ if(p.dashTimer>0){ctx.globalAlpha=.28;ctx.drawImage(drawPlayer.sprite,x-9-p.face*7,y-1,48,48);ctx.globalAlpha=1}
+ ctx.translate(x+p.w/2,y+p.h/2+(moving?Math.abs(Math.sin(p.anim*.8))*1.5:0));
+ ctx.scale(p.face||1,1);
+ if(air)ctx.rotate(-.08);
+ if(punch){ctx.drawImage(drawPlayer.sprite,0,0,64,64,-destW/2+2,-destH/2,destW,destH);ctx.fillStyle='#ffe7a5';ctx.fillRect(18,-1,5,2)}
+ else ctx.drawImage(drawPlayer.sprite,-destW/2,-destH/2,destW,destH);
  ctx.restore();
 }
 function drawEnemy(e){const boss=!!e.boss;let x=e.x-cam,y=ground-(boss?75:43)+(e.yoff||0);if(x<-90||x>W+90)return;const colors=['#668a9d','#4b9a75','#6b3c8e','#4c9eb4','#4b8b76','#3979a8','#b28b54','#d0d0b2','#8c5b9f','#c45b36','#a64a32','#e17a35','#55546e','#d78b48','#9c3b62','#6d9b58','#8a5c9d','#416f58','#54b9cb','#b69a64','#c7b4dc','#d85b36','#a7a04d','#51445f','#b8c0ce'];const c=colors[e.kind]||'#668a9d';const bw=boss?54:32,bh=boss?58:32;rect(x+5,y+bh,bw-8,7,'#171722');rect(x+5,y+12,bw-10,bh-8,c);rect(x+2,y+5,bw-4,18,c);
