@@ -117,10 +117,10 @@ function drawPlayer(){
  if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
  const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/5)%2:0;
  const air=!p.on,punch=p.atk>0;
- // 64x64 pixel-art sprite, rendered with nearest-neighbour scaling
+ // 128x128 pixel-art sprite with finer highlights and seams
  if(!drawPlayer.sprite){
-  const c=document.createElement('canvas');c.width=64;c.height=64;
-  const g=c.getContext('2d');g.imageSmoothingEnabled=false;
+  const c=document.createElement('canvas');c.width=128;c.height=128;
+  const g=c.getContext('2d');g.imageSmoothingEnabled=false;g.scale(2,2);
   const P=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(x,y,w,h)};
   const outline='#29232c',hair='#211d27',hairHi='#51404a',skin='#d99a70',skinHi='#f2bd91',skinShade='#9c604e';
   const gi='#f4f0df',giHi='#fffdf4',giShade='#a9aab2',red='#b92f39',redHi='#f47772',black='#25232b',pants='#e9e6dc',shoe='#514b54';
@@ -167,6 +167,13 @@ function drawPlayer(){
   P(23,37,2,8,giShade);P(43,37,2,8,giShade);P(26,48,18,2,black);
   P(27,34,2,5,giHi);P(40,35,2,4,giHi);
   P(17,62,8,1,'#fff');P(46,62,8,1,'#fff');
+  // Fine 1-pixel accents at native 128x128 resolution
+  g.setTransform(1,0,0,1,0,0);
+  P(52,27,27,2,'#ff9b8c');P(57,29,31,1,'#7e202d');
+  P(54,64,3,19,'#ffffff');P(82,67,2,15,'#ffffff');
+  P(43,93,39,2,'#858893');P(47,98,35,2,'#ffffff');
+  P(61,102,3,8,'#d8cbb2');P(66,110,3,5,'#17161c');
+  P(36,119,17,2,'#f7f5ee');P(92,120,17,2,'#f7f5ee');
   // punch pose: extend foreground fist to the right
   drawPlayer.sprite=c;
  }
@@ -177,7 +184,7 @@ function drawPlayer(){
  ctx.translate(x+p.w/2,y+p.h/2+(moving?Math.abs(Math.sin(p.anim*.8))*1.5:0));
  ctx.scale(p.face||1,1);
  if(air)ctx.rotate(-.08);
- if(punch){ctx.drawImage(drawPlayer.sprite,0,0,64,64,-destW/2+2,-destH/2,destW,destH);ctx.fillStyle='#ffe7a5';ctx.fillRect(18,-1,5,2)}
+ if(punch){ctx.drawImage(drawPlayer.sprite,0,0,128,128,-destW/2+2,-destH/2,destW,destH);ctx.fillStyle='#ffe7a5';ctx.fillRect(18,-1,5,2)}
  else ctx.drawImage(drawPlayer.sprite,-destW/2,-destH/2,destW,destH);
  ctx.restore();
 }
