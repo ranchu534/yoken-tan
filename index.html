@@ -27,11 +27,19 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 .ctrl:active,.ctrl.down{transform:translateY(3px);box-shadow:0 1px #0a0d17;background:#56668f}
 .ctrl.attack{border-color:#c18b50;background:linear-gradient(#79502e,#3a2a28);font-size:13px;min-width:58px}
 .ctrl.special{border-color:#4aafbd;background:linear-gradient(#276e7a,#193b50);font-size:12px;min-width:62px}
-#start{position:absolute;inset:0;z-index:5;pointer-events:auto;background:#101522d9;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
-.panel{max-width:440px;border:2px solid #bd9657;background:#171c2e;padding:24px 20px;box-shadow:0 0 0 5px #171c2eaa}
-.panel h1{font-size:clamp(25px,7vw,42px);margin:0;color:#f4ce7b;letter-spacing:.12em}
-.panel p{line-height:1.8;color:#d7d9e6;font-size:13px}
-#startBtn{position:relative;z-index:6;touch-action:manipulation;cursor:pointer;background:#c68a48;border:0;color:#201626;font-weight:900;font-size:17px;padding:12px 28px;border-radius:9px}
+#start{position:absolute;inset:0;z-index:5;pointer-events:auto;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;overflow:auto;background:radial-gradient(ellipse at 50% 25%,#543344 0%,#24243a 42%,#0c1020 100%)}
+ #start:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 34px,#ffffff08 35px 36px);pointer-events:none}
+ .panel{position:relative;width:min(100%,440px);border:2px solid #bd9657;background:linear-gradient(160deg,#25283cf2,#111625f5);padding:clamp(18px,5vw,28px) 20px;box-shadow:0 0 0 5px #171c2eaa,0 12px 45px #0009}
+ .panel h1{font-size:clamp(34px,9vw,54px);margin:4px 0 0;color:#f4ce7b;letter-spacing:.2em;text-shadow:0 3px #713d38,0 0 22px #e6a45b66}
+ .titleSub{color:#e3c99b;font-size:11px;letter-spacing:.25em;margin:4px 0 16px}
+ .titleMark{font-size:clamp(34px,10vw,54px);line-height:1.2;color:#d9b16c;text-shadow:0 0 18px #e2a85a66}
+ .panel p{line-height:1.8;color:#d7d9e6;font-size:13px}
+ .menuButtons{display:grid;gap:10px;margin-top:18px}
+ .menuBtn{position:relative;z-index:6;touch-action:manipulation;cursor:pointer;width:100%;border:1px solid #d4ad6b;color:#fff1d2;font-weight:900;font-size:16px;padding:13px 18px;border-radius:8px;background:linear-gradient(#8d493e,#542d35);box-shadow:0 4px #261b2a}
+ .menuBtn.secondary{background:linear-gradient(#39435c,#20283e);border-color:#7583a1;font-size:14px}
+ .menuBtn:active{transform:translateY(2px);box-shadow:0 2px #261b2a}
+ #helpText{display:none;margin-top:12px;padding:10px;background:#0c1220;border:1px solid #555d77;border-radius:8px;color:#e2e5ef;font-size:12px;line-height:1.8}
+ #continueBtn:disabled{opacity:.4;filter:grayscale(1);cursor:not-allowed}
 #restart{position:absolute;right:12px;bottom:10px;border:1px solid #7c86a6;background:#171c2e;color:#fff;border-radius:8px;padding:7px 10px;font-size:11px}
 @media(min-width:700px){#bottom{justify-content:center;gap:90px}.ctrl{width:64px;height:60px}}
 </style>
@@ -48,7 +56,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 </div>
 <div id="mission">目的：妖怪を3体倒せ<br><span id="count">討伐 0 / 3</span></div>
 <div id="message"></div>
-<div id="start"><div class="panel"><h1>妖拳譚</h1><p>妖怪が巣食う夜の森。<br>拳に宿した気を解き放ち、森の奥へ進め！<br><br>移動：◀ ▶　ジャンプ：▲<br>攻撃：拳　奥義：気功波（気力30消費）</p><button id="startBtn">冒険を始める</button></div></div>
+<div id="start"><div class="panel"><div class="titleMark">⛩</div><h1>妖拳譚</h1><div class="titleSub">― 妖を討つ拳 ―</div><p>妖怪が巣食う夜の森。<br>拳に宿した気を解き放ち、森の奥へ進め。</p><div class="menuButtons"><button class="menuBtn" id="startBtn">冒険を始める</button><button class="menuBtn secondary" id="continueBtn" disabled>つづきから（セーブなし）</button><button class="menuBtn secondary" id="helpBtn">遊び方・操作説明</button></div><div id="helpText">移動：◀ ▶<br>ジャンプ：▲<br>攻撃：拳撃<br>奥義：気功波（気力30消費）<br>妖怪を倒すと経験値を獲得。レベルアップで体力・気力が成長する！</div><div class="titleSub" style="margin:18px 0 0">和風妖怪アクション RPG</div></div></div>
 <button id="restart">最初から</button>
 </div>
 <div id="bottom">
@@ -91,6 +99,10 @@ document.querySelectorAll('.ctrl').forEach(b=>{const k=b.dataset.key;const on=e=
 window.addEventListener('keydown',e=>{let m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'jump',KeyZ:'attack',KeyX:'special'}[e.code];if(m){keys[m]=true;e.preventDefault()}});window.addEventListener('keyup',e=>{let m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'jump',KeyZ:'attack',KeyX:'special'}[e.code];if(m)keys[m]=false});
 function beginGame(e){if(e){e.preventDefault();e.stopPropagation()}started=true;start.style.display='none';start.style.pointerEvents='none';msg.textContent=''}
 const startBtn=document.getElementById('startBtn');startBtn.addEventListener('click',beginGame);startBtn.addEventListener('pointerup',beginGame);
+ document.getElementById('helpBtn').addEventListener('click',()=>{const h=document.getElementById('helpText');h.style.display=h.style.display==='block'?'none':'block'});
+ const continueBtn=document.getElementById('continueBtn');try{continueBtn.disabled=!localStorage.getItem('yokenTanSave')}catch(e){}
+ continueBtn.addEventListener('click',()=>{try{const save=JSON.parse(localStorage.getItem('yokenTanSave')||'null');if(!save)return;reset();player.level=save.level||1;player.exp=save.exp||0;player.maxHp=save.maxHp||100;player.maxKi=save.maxKi||100;player.hp=Math.min(save.hp??player.maxHp,player.maxHp);player.ki=Math.min(save.ki??player.maxKi,player.maxKi);updateHud();beginGame()}catch(e){msg.textContent='セーブデータを読み込めませんでした'}});
+ setInterval(()=>{if(!started||!player)return;try{localStorage.setItem('yokenTanSave',JSON.stringify({level:player.level,exp:player.exp,maxHp:player.maxHp,maxKi:player.maxKi,hp:player.hp,ki:player.ki}))}catch(e){}},1500);
 document.getElementById('restart').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reset();started=true;start.style.display='none';start.style.pointerEvents='none'});
 reset();requestAnimationFrame(loop);
 })();
