@@ -15,6 +15,7 @@ header{height:48px;flex:none;display:flex;align-items:center;justify-content:spa
 #stage{position:relative;flex:1;min-height:0;background:#20253a;overflow:hidden}
 canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 #hud{position:absolute;left:12px;top:10px;right:12px;pointer-events:none;text-shadow:2px 2px #151827}
+#tenpuCooldown{position:absolute;right:0;top:112px;padding:9px 13px;border:2px solid #b88cff;border-radius:10px;background:linear-gradient(135deg,#302044ed,#171329ed);color:#ead7ff;font-size:13px;font-weight:900;letter-spacing:.03em;text-shadow:1px 1px #171020;box-shadow:0 3px 12px #0008;white-space:nowrap;z-index:5}
 .hudrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px;font-weight:800}
 .bar{height:10px;width:min(34vw,180px);border:2px solid #e9e6d7;background:#292d40;box-shadow:2px 2px #111}
 .fill{height:100%;width:100%;background:#d94e5b;transition:width .12s}
@@ -53,7 +54,7 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 <div id="hud">
  <div class="hudrow">体力 <div class="bar"><div class="fill" id="hpFill"></div></div><span id="hpText">100</span></div>
  <div class="hudrow">気力 <div class="bar"><div class="fill" id="kiFill"></div></div><span id="kiText">100</span></div>
- <div class="hudrow">Lv.<span id="levelText">1</span> EXP <div class="bar"><div class="fill" id="xpFill" style="background:#e8bd58"></div></div><span id="xpText">0/50</span></div><div class="hudrow" id="tenpuCooldown" style="color:#d9b6ff">天斧：使用可能</div>
+ <div class="hudrow">Lv.<span id="levelText">1</span> EXP <div class="bar"><div class="fill" id="xpFill" style="background:#e8bd58"></div></div><span id="xpText">0/50</span></div><div id="tenpuCooldown">天斧：使用可能</div>
 </div>
 <div id="mission">目的：このステージの妖怪を倒せ<br><span id="count">討伐 0 / 4</span></div>
 <div id="message"></div>
