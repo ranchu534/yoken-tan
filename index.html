@@ -91,13 +91,25 @@ function drawBg(){const palettes=[null,['#171d35','#30344a','#514052'],['#102c42
 }
 function drawTerrain(){
  const plats=stagePlatforms[stageIndex]||[];
- const styles=[null,{top:'#9b8060',side:'#51463e',detail:'#c2a276'},{top:'#70c8d0',side:'#286477',detail:'#b4f0e9'},{top:'#b2a18a',side:'#51465a',detail:'#e2d2b4'},{top:'#f08a43',side:'#702d31',detail:'#ffd06a'},{top:'#aaa0c8',side:'#403953',detail:'#ded3f2'}];const st=styles[stageIndex]||styles[1];
- for(const p of plats){const x=p[0]-cam,y=ground+p[1],w=p[2];if(x>W+30||x+w<-30)continue;rect(x,y,w,12,st.side);rect(x,y,w,5,st.top);for(let k=12;k<w-8;k+=28)rect(x+k,y+7,12,2,st.detail);}
- if(stageIndex===1){for(let i=0;i<9;i++){let x=((i*263-cam*.8)%(W+80)+W+80)%(W+80)-30;rect(x,ground-10,20,7,'#53634b');rect(x+5,ground-16,10,8,'#71815a')}}
- if(stageIndex===2){for(let i=0;i<7;i++){let x=((i*177-cam*.7)%(W+120)+W+120)%(W+120)-40;rect(x,ground+9,75,22,'#236477');rect(x+8,ground+8,55,3,'#75d3d1')}}
- if(stageIndex===3){for(let i=0;i<7;i++){let x=((i*205-cam*.65)%(W+100)+W+100)%(W+100)-30;rect(x,ground-22,34,22,'#554b59');rect(x+4,ground-26,26,4,'#a89a80')}}
- if(stageIndex===4){for(let i=0;i<10;i++){let x=((i*131-cam*.9)%(W+100)+W+100)%(W+100)-30;rect(x,ground+12,42,4,'#b94132');rect(x+8,ground+17,24,3,'#ff9a43')}}
- if(stageIndex===5){for(let i=0;i<8;i++){let x=((i*158-cam*.75)%(W+100)+W+100)%(W+100)-30;rect(x,ground-28,22,28,'#39344f');rect(x-3,ground-32,28,5,'#aaa0c8')}}
+ const styles=[null,{top:'#b8a078',side:'#594638',detail:'#f1d69a',glow:'#d5b778'},{top:'#a4f4ef',side:'#236b80',detail:'#e0ffff',glow:'#55dbe2'},{top:'#e1cfad',side:'#51445e',detail:'#fff0c9',glow:'#b7a0ce'},{top:'#ffb15c',side:'#762b32',detail:'#ffe28a',glow:'#ff633d'},{top:'#d8cbff',side:'#39304f',detail:'#fff1ff',glow:'#9c83dc'}];
+ const st=styles[stageIndex]||styles[1];
+ // 大きく厚みのある足場。画面内に入ったら必ず目立つように描画
+ for(const p of plats){
+  const x=p[0]-cam,y=ground+p[1],w=p[2];
+  if(x>W+40||x+w<-40)continue;
+  rect(x-3,y+13,w+6,7,'#171522');
+  rect(x+5,y+20,Math.max(8,w-10),Math.max(0,ground-y-20),st.side);
+  rect(x,y,w,15,st.side);
+  rect(x,y,w,7,st.top);
+  rect(x+5,y+8,w-10,3,st.detail);
+  for(let k=14;k<w-8;k+=30){rect(x+k,y+3,13,3,st.glow);rect(x+k+4,y+15,5,5,st.detail)}
+ }
+ // ステージごとの地面装飾
+ if(stageIndex===1){for(let i=0;i<11;i++){let x=((i*211-cam*.8)%(W+100)+W+100)%(W+100)-30;rect(x,ground-13,24,13,'#536b45');rect(x+5,ground-24,14,14,'#718d55');rect(x+10,ground-30,5,8,'#9aaa68')}}
+ if(stageIndex===2){for(let i=0;i<9;i++){let x=((i*143-cam*.7)%(W+120)+W+120)%(W+120)-40;rect(x,ground+8,90,24,'#174e69');rect(x+8,ground+8,70,5,'#79e2df');rect(x+22,ground+17,30,3,'#42a8bc')}}
+ if(stageIndex===3){for(let i=0;i<8;i++){let x=((i*177-cam*.65)%(W+100)+W+100)%(W+100)-30;rect(x,ground-27,42,27,'#51465b');rect(x+4,ground-32,34,6,'#d1b994');rect(x+12,ground-44,18,12,'#82718c')}}
+ if(stageIndex===4){for(let i=0;i<12;i++){let x=((i*111-cam*.9)%(W+100)+W+100)%(W+100)-30;rect(x,ground+10,52,5,'#b94132');rect(x+8,ground+17,34,4,'#ff9a43');rect(x+18,ground+23,15,3,'#ffd06a')}}
+ if(stageIndex===5){for(let i=0;i<9;i++){let x=((i*137-cam*.75)%(W+100)+W+100)%(W+100)-30;rect(x,ground-34,27,34,'#39344f');rect(x-4,ground-40,35,7,'#aaa0c8');rect(x+8,ground-52,11,12,'#655582')}}
 }
 function drawPlayer(){let p=player,x=p.x-cam,y=p.y;if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;rect(x+3,ground-3,28,4,'#171722');rect(x+7,y+32,7,15,'#292e49');rect(x+18,y+32,7,15,'#292e49');rect(x+5,y+44,11,4,'#d8d2c0');rect(x+17,y+44,12,4,'#d8d2c0');rect(x+5,y+17,21,19,'#b74742');rect(x+3,y+20,25,5,'#e1c58c');rect(x+9,y+3,15,15,'#e6b88e');rect(x+7,y,19,7,'#252638');rect(x+7,y-2,18,4,'#d9d5c8');rect(x+(p.face>0?20:7),y+9,3,3,'#201c25');if(p.atk>0){rect(x+(p.face>0?27:-10),y+21,15,9,'#e6b88e');rect(x+(p.face>0?37:-13),y+19,7,12,'#f4d39b')}else{rect(x+(p.face>0?23:0),y+23,7,9,'#e6b88e')}}
 function drawEnemy(e){const boss=!!e.boss;let x=e.x-cam,y=ground-(boss?75:43);if(x<-80||x>W+80)return;const colors=['#668a9d','#4b9a75','#6b3c8e','#4c9eb4','#4b8b76','#3979a8','#b28b54','#d0d0b2','#8c5b9f','#c45b36','#a64a32','#e17a35','#55546e','#d78b48','#9c3b62'];const c=colors[e.kind]||'#668a9d';rect(x+5,y+(boss?65:35),boss?48:28,7,'#171722');rect(x+5,y+12,boss?44:25,boss?53:30,c);rect(x+2,y+5,boss?50:30,18,c);rect(x+8,y+10,4,4,'#fff08a');rect(x+(boss?34:20),y+10,4,4,'#fff08a');rect(x+(boss?0:3),y+(boss?0:2),boss?10:6,8,'#e4d7c0');rect(x+(boss?40:22),y+(boss?0:2),boss?10:6,8,'#e4d7c0');rect(x,y-9,(boss?60:36),4,'#342b3a');rect(x,y-9,(boss?60:36)*Math.max(0,e.hp/e.max),4,'#d94e5b');if(boss)text(e.name,x-4,y-16,11,'#ffd78b')}
