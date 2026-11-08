@@ -115,48 +115,73 @@ function drawTerrain(){
 function drawPlayer(){
  let p=player,x=p.x-cam,y=p.y;
  if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
- const moving=Math.abs(p.vx||0)>.1&&p.on;
- const phase=p.anim*.42;
- const stride=moving?Math.sin(phase):0;
- const airborne=!p.on;
- const punch=p.atk>0;
- const crouch=airborne?2:0;
- const bob=moving?Math.abs(Math.sin(phase*2))*1.8:Math.sin(p.anim*.09)*1.1;
- ctx.save();
- ctx.translate(x+p.w/2,y+24+bob);
- ctx.scale(p.face||1,1);
- // Soft shadow follows the character's height
- ctx.fillStyle='rgba(0,0,0,.3)';ctx.beginPath();ctx.ellipse(0,25,14,3,0,0,Math.PI*2);ctx.fill();
- // Back leg swings opposite to the front leg
- ctx.save();ctx.translate(-5,7-crouch);ctx.rotate(airborne?-.38:stride*.62);
- ctx.fillStyle='#292e49';ctx.fillRect(-3,0,7,13);
- ctx.fillStyle='#d8d2c0';ctx.fillRect(-4,10,12,4);ctx.restore();
- ctx.save();ctx.translate(5,7-crouch);ctx.rotate(airborne?.42:-stride*.62);
- ctx.fillStyle='#343a58';ctx.fillRect(-3,0,7,13);
- ctx.fillStyle='#e5dfcd';ctx.fillRect(-2,10,12,4);ctx.restore();
- // Gi jacket and belt lean with the running motion
- ctx.save();ctx.translate(0,Math.abs(stride)*.8);ctx.rotate(moving?-stride*.055:0);
- ctx.fillStyle='#8f3535';ctx.beginPath();ctx.moveTo(-10,-8);ctx.lineTo(10,-8);ctx.lineTo(12,10);ctx.lineTo(-12,10);ctx.closePath();ctx.fill();
- ctx.fillStyle='#c34d46';ctx.fillRect(-10,-8,20,17);
- ctx.fillStyle='#e8cf9c';ctx.fillRect(-12,0,24,5);
- ctx.fillStyle='#805037';ctx.fillRect(2,1,5,3);
- // Rear arm swings naturally
- ctx.save();ctx.translate(-9,-5);ctx.rotate(punch?.65:-stride*.72);
- ctx.fillStyle='#963b38';ctx.fillRect(-3,0,7,10);
- ctx.fillStyle='#e6b88e';ctx.fillRect(-3,8,8,7);ctx.restore();
- // Front arm punches forward or counter-swings while running
- ctx.save();ctx.translate(9,-5);
- ctx.rotate(punch?-.12:stride*.72);
- ctx.fillStyle='#b74742';ctx.fillRect(-1,0,7,10);
- ctx.fillStyle='#e6b88e';ctx.fillRect(0,8,8,7);
- if(punch){ctx.fillStyle='#f4d39b';ctx.fillRect(5,5,12,7);ctx.fillStyle='#e6b88e';ctx.fillRect(14,4,7,9)}
+ const moving=Math.abs(p.vx||0)>.1&&p.on,phase=p.anim*.42;
+ const stride=moving?Math.sin(phase):0,airborne=!p.on,punch=p.atk>0;
+ const bob=moving?Math.abs(Math.sin(phase*2))*1.8:Math.sin(p.anim*.09)*.6;
+ const skin='#e8b994',ink='#252333';
+ const rounded=(xx,yy,w,h,r,fill,stroke)=>{
+  ctx.beginPath();ctx.roundRect(xx,yy,w,h,r);ctx.fillStyle=fill;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=.8;ctx.stroke()}
+ };
+ const limb=(xx,yy,angle,len,width,fill,hand=true)=>{
+  ctx.save();ctx.translate(xx,yy);ctx.rotate(angle);
+  rounded(-width/2,0,width,len,Math.min(3,width/2),fill,'#292536');
+  ctx.strokeStyle='#ffffff35';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-width*.2,3);ctx.lineTo(-width*.2,len-3);ctx.stroke();
+  if(hand){ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(0,len-1,width*.55,width*.55,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#754d48';ctx.stroke()}
+  ctx.restore();
+ };
+ ctx.save();ctx.translate(x+p.w/2,y+24+bob);ctx.scale(p.face||1,1);
+ // Soft ground shadow and dash streak
+ ctx.fillStyle='rgba(0,0,0,.32)';ctx.beginPath();ctx.ellipse(0,25,15,3.2,0,0,Math.PI*2);ctx.fill();
+ if(p.dashTimer>0){ctx.strokeStyle='#a8dcff99';ctx.lineWidth=2;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(-17-i*4,-5+i*7);ctx.lineTo(-27-i*4,-5+i*7);ctx.stroke()}}
+ // Legs: layered trousers, seams and wrapped ankle guards
+ const legAngle=airborne?-.28:stride*.48;
+ ctx.save();ctx.translate(-5,7);ctx.rotate(legAngle);
+ rounded(-4,0,8,13,3,'#303650','#171b2b');rounded(-3,2,3,8,1,'#56617c');
+ rounded(-4,10,9,4,1,'#e2d8c4','#655b55');
+ ctx.fillStyle='#292638';ctx.beginPath();ctx.ellipse(1,15,7,3,0,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+ ctx.save();ctx.translate(5,7);ctx.rotate(airborne?.38:-stride*.48);
+ rounded(-4,0,8,13,3,'#39415e','#171b2b');rounded(0,2,2,8,1,'#69718a');
+ rounded(-4,10,9,4,1,'#e2d8c4','#655b55');
+ ctx.fillStyle='#292638';ctx.beginPath();ctx.ellipse(1,15,7,3,0,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+ // Back arm and detailed gi torso
+ limb(-10,-10,punch?.35:-stride*.58,13,7,'#853638');
+ ctx.save();ctx.rotate(moving?-stride*.045:0);
+ ctx.beginPath();ctx.moveTo(-9,-14);ctx.quadraticCurveTo(0,-17,9,-14);ctx.lineTo(11,8);ctx.quadraticCurveTo(0,13,-11,8);ctx.closePath();
+ const gi=ctx.createLinearGradient(-10,-14,11,10);gi.addColorStop(0,'#a83f40');gi.addColorStop(.48,'#d15b50');gi.addColorStop(1,'#792d38');ctx.fillStyle=gi;ctx.fill();ctx.strokeStyle='#492a35';ctx.lineWidth=1;ctx.stroke();
+ // Jacket overlap, folds and stitching
+ ctx.beginPath();ctx.moveTo(-2,-13);ctx.lineTo(5,-12);ctx.lineTo(1,5);ctx.lineTo(-5,2);ctx.closePath();ctx.fillStyle='#f0d8b5';ctx.fill();
+ ctx.beginPath();ctx.moveTo(-2,-12);ctx.lineTo(5,-11);ctx.lineTo(2,4);ctx.strokeStyle='#9a4645';ctx.lineWidth=1.2;ctx.stroke();
+ ctx.strokeStyle='#f3a18a88';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(-8,-6);ctx.quadraticCurveTo(-3,-3,-7,4);ctx.moveTo(7,-7);ctx.lineTo(8,3);ctx.stroke();
+ // Wide dark belt with knot
+ rounded(-11,3,22,5,1,'#e8d3a4','#6e503c');rounded(1,3,6,5,1,'#80513d','#422e2c');
+ ctx.fillStyle='#f5e6c6';ctx.fillRect(-8,4,5,1);
+ // Front arm / punch
+ ctx.save();ctx.translate(9,-10);ctx.rotate(punch?-.95:stride*.58);
+ rounded(-1,-1,7,11,3,'#b94c48','#512d36');
+ ctx.strokeStyle='#ed9580';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(1,2);ctx.lineTo(1,8);ctx.stroke();
+ ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(3,12,4.2,4.5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#80554d';ctx.stroke();
+ if(punch){rounded(1,8,12,7,3,'#f0c39d','#704c47');ctx.fillStyle='#f7d7b4';ctx.fillRect(10,9,5,4)}
  ctx.restore();ctx.restore();
- // Neck, face, hair and headband
- ctx.fillStyle='#d99e78';ctx.fillRect(-3,-13,6,6);
- ctx.fillStyle='#e6b88e';ctx.beginPath();ctx.arc(0,-17,8,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#252638';ctx.beginPath();ctx.arc(-1,-19,9,Math.PI,Math.PI*2);ctx.lineTo(8,-17);ctx.lineTo(5,-22);ctx.lineTo(-7,-21);ctx.closePath();ctx.fill();
- ctx.fillStyle='#d9d5c8';ctx.fillRect(-8,-21,16,3);
- ctx.fillStyle='#201c25';ctx.fillRect(3,-17,2,2);
+ // Neck and face
+ rounded(-3,-19,6,7,2,'#d89d7e','#714d49');
+ const face=ctx.createRadialGradient(-3,-23,1,0,-18,10);face.addColorStop(0,'#ffe0bd');face.addColorStop(1,skin);
+ ctx.fillStyle=face;ctx.beginPath();ctx.ellipse(0,-20,8.5,9.5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#69464a';ctx.lineWidth=.9;ctx.stroke();
+ // Ear and facial details
+ ctx.fillStyle='#d99b80';ctx.beginPath();ctx.arc(-8,-19,2.2,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=ink;ctx.beginPath();ctx.ellipse(3,-21,1.1,1.5,0,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='#8e514e';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(1,-15);ctx.quadraticCurveTo(3,-14,5,-15);ctx.stroke();
+ // Hair silhouette, side locks and topknot
+ ctx.fillStyle='#242333';ctx.beginPath();ctx.moveTo(-9,-21);ctx.quadraticCurveTo(-11,-31,0,-30);ctx.quadraticCurveTo(10,-31,9,-20);ctx.lineTo(6,-17);ctx.lineTo(4,-23);ctx.lineTo(0,-20);ctx.lineTo(-4,-23);ctx.lineTo(-7,-17);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#45445a';ctx.beginPath();ctx.moveTo(-6,-26);ctx.quadraticCurveTo(0,-31,6,-26);ctx.strokeStyle='#777087';ctx.lineWidth=1.1;ctx.stroke();
+ ctx.fillStyle='#252333';ctx.beginPath();ctx.ellipse(1,-31,3,4,-.3,0,Math.PI*2);ctx.fill();
+ // White headband with knot and trailing ribbon
+ ctx.save();ctx.rotate(-.06);rounded(-8,-24,16,3,1,'#eee5d1','#746c69');ctx.strokeStyle='#ffffff';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(-6,-23);ctx.lineTo(5,-23);ctx.stroke();ctx.restore();
+ ctx.fillStyle='#e9e0cf';ctx.beginPath();ctx.moveTo(-7,-23);ctx.lineTo(-13,-18);ctx.lineTo(-11,-26);ctx.closePath();ctx.fill();
+ // Fine highlight along shoulder
+ ctx.strokeStyle='#f7b3a0';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-7,-12);ctx.quadraticCurveTo(0,-16,7,-12);ctx.stroke();
  ctx.restore();
 }
 function drawEnemy(e){const boss=!!e.boss;let x=e.x-cam,y=ground-(boss?75:43)+(e.yoff||0);if(x<-90||x>W+90)return;const colors=['#668a9d','#4b9a75','#6b3c8e','#4c9eb4','#4b8b76','#3979a8','#b28b54','#d0d0b2','#8c5b9f','#c45b36','#a64a32','#e17a35','#55546e','#d78b48','#9c3b62','#6d9b58','#8a5c9d','#416f58','#54b9cb','#b69a64','#c7b4dc','#d85b36','#a7a04d','#51445f','#b8c0ce'];const c=colors[e.kind]||'#668a9d';const bw=boss?54:32,bh=boss?58:32;rect(x+5,y+bh,bw-8,7,'#171722');rect(x+5,y+12,bw-10,bh-8,c);rect(x+2,y+5,bw-4,18,c);
