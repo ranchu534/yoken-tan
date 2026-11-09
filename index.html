@@ -74,7 +74,7 @@ const hpFill=document.getElementById('hpFill'),kiFill=document.getElementById('k
 let W=800,H=450,last=0,started=false,won=false,lost=false,cam=0,kills=0,shake=0,levelUpRecovery=false;
 const keys={left:false,right:false,smallJump:false,bigJump:false,dash:false,attack:false,special:false,tenpu:false};
 const worldW=2200;let ground=370;let stageIndex=1;
-const stagePlatforms={1:[[430,-62,130],[900,-105,120],[1370,-58,150]],2:[[300,-55,150],[680,-100,110],[1050,-65,150],[1480,-115,130]],3:[[380,-65,140],[760,-115,150],[1160,-165,130],[1540,-95,170]],4:[[350,-70,130],[720,-125,130],[1110,-75,150],[1510,-135,140]],5:[[330,-90,150],[700,-145,140],[1080,-90,160],[1480,-160,150]]};const stageNames=['','第一章：鳥居の森','第二章：霧の川','第三章：朽ちた社','第四章：鬼火の谷','第五章：妖魔城'];const stageEnemies={1:[{x:330,hp:35,max:35,kind:0,name:'森こぞう'},{x:620,hp:45,max:45,kind:1,name:'苔の妖'},{x:900,hp:48,max:48,kind:15,name:'木霊の弓使い'},{x:1200,hp:55,max:55,kind:16,name:'毒花蜘蛛'},{x:1500,hp:48,max:48,kind:0,name:'森こぞう'},{x:1800,hp:125,max:125,kind:2,name:'森の大鬼',boss:true}],2:[{x:320,hp:55,max:55,kind:3,name:'水の亡霊'},{x:600,hp:65,max:65,kind:4,name:'河童'},{x:900,hp:72,max:72,kind:17,name:'沼ぬし'},{x:1200,hp:62,max:62,kind:18,name:'泡吹き魚人'},{x:1500,hp:70,max:70,kind:3,name:'水の亡霊'},{x:1800,hp:170,max:170,kind:5,name:'川龍',boss:true}],3:[{x:300,hp:70,max:70,kind:6,name:'灯籠おばけ'},{x:580,hp:75,max:75,kind:7,name:'狛犬'},{x:850,hp:90,max:90,kind:19,name:'からかさ小僧'},{x:1120,hp:85,max:85,kind:20,name:'お札の式鬼'},{x:1450,hp:90,max:90,kind:7,name:'狛犬'},{x:1800,hp:205,max:205,kind:8,name:'社の怨霊',boss:true}],4:[{x:300,hp:90,max:90,kind:9,name:'火車'},{x:580,hp:95,max:95,kind:10,name:'炎の武者'},{x:850,hp:105,max:105,kind:21,name:'火喰い天狗'},{x:1120,hp:110,max:110,kind:22,name:'溶岩なめくじ'},{x:1450,hp:110,max:110,kind:10,name:'炎の武者'},{x:1800,hp:250,max:250,kind:11,name:'業火鬼',boss:true}],5:[{x:300,hp:115,max:115,kind:12,name:'影の兵'},{x:580,hp:125,max:125,kind:13,name:'妖狐'},{x:850,hp:135,max:135,kind:23,name:'夜叉の鎖使い'},{x:1120,hp:145,max:145,kind:24,name:'骸骨武者'},{x:1450,hp:140,max:140,kind:13,name:'妖狐'},{x:1800,hp:330,max:330,kind:14,name:'妖魔王',boss:true}]};
+const stagePlatforms={1:[[430,-62,130],[900,-105,120],[1370,-58,150]],2:[[300,-55,150],[680,-100,110],[1050,-65,150],[1480,-115,130]],3:[[380,-65,140],[760,-115,150],[1160,-165,130],[1540,-95,170]],4:[[350,-70,130],[720,-125,130],[1110,-75,150],[1510,-135,140]],5:[[330,-90,150],[700,-145,140],[1080,-90,160],[1480,-160,150]]};const stageNames=['','第一章：鳥居の森','第二章：霧の川','第三章：朽ちた社','第四章：鬼火の谷','第五章：妖魔城'];const stageEnemies={1:[{x:330,hp:35,max:35,kind:0,name:'森こぞう'},{x:475,hp:42,max:42,kind:25,name:'青ぷに'},{x:620,hp:45,max:45,kind:1,name:'苔の妖'},{x:900,hp:48,max:48,kind:15,name:'木霊の弓使い'},{x:1200,hp:55,max:55,kind:16,name:'毒花蜘蛛'},{x:1500,hp:48,max:48,kind:0,name:'森こぞう'},{x:1800,hp:125,max:125,kind:2,name:'森の大鬼',boss:true}],2:[{x:320,hp:55,max:55,kind:3,name:'水の亡霊'},{x:600,hp:65,max:65,kind:4,name:'河童'},{x:900,hp:72,max:72,kind:17,name:'沼ぬし'},{x:1200,hp:62,max:62,kind:18,name:'泡吹き魚人'},{x:1500,hp:70,max:70,kind:3,name:'水の亡霊'},{x:1800,hp:170,max:170,kind:5,name:'川龍',boss:true}],3:[{x:300,hp:70,max:70,kind:6,name:'灯籠おばけ'},{x:580,hp:75,max:75,kind:7,name:'狛犬'},{x:850,hp:90,max:90,kind:19,name:'からかさ小僧'},{x:1120,hp:85,max:85,kind:20,name:'お札の式鬼'},{x:1450,hp:90,max:90,kind:7,name:'狛犬'},{x:1800,hp:205,max:205,kind:8,name:'社の怨霊',boss:true}],4:[{x:300,hp:90,max:90,kind:9,name:'火車'},{x:580,hp:95,max:95,kind:10,name:'炎の武者'},{x:850,hp:105,max:105,kind:21,name:'火喰い天狗'},{x:1120,hp:110,max:110,kind:22,name:'溶岩なめくじ'},{x:1450,hp:110,max:110,kind:10,name:'炎の武者'},{x:1800,hp:250,max:250,kind:11,name:'業火鬼',boss:true}],5:[{x:300,hp:115,max:115,kind:12,name:'影の兵'},{x:580,hp:125,max:125,kind:13,name:'妖狐'},{x:850,hp:135,max:135,kind:23,name:'夜叉の鎖使い'},{x:1120,hp:145,max:145,kind:24,name:'骸骨武者'},{x:1450,hp:140,max:140,kind:13,name:'妖狐'},{x:1800,hp:330,max:330,kind:14,name:'妖魔王',boss:true}]};
 let player,enemies,shots,hostileShots,particles,waves;
 function resize(){const r=canvas.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.max(1,Math.floor(W*d));canvas.height=Math.max(1,Math.floor(H*d));ctx.setTransform(d,0,0,d,0,0);ctx.imageSmoothingEnabled=false;ground=Math.max(130,Math.min(370,H*.78));if(player){player.y= Math.min(player.y,ground-player.h);}}
 window.addEventListener('resize',resize);resize();
@@ -231,14 +231,17 @@ function drawEnemy(e){
  ['#696b87','#c5c9e2','#373950'],['#d99a55','#ffe4a1','#70452e'],['#b64f78','#f4b6ca','#66334b'],
  ['#83ad62','#d7eea5','#49613c'],['#9c72ae','#e7c9f2','#563c67'],['#548d70','#b8e2b4','#315644'],
  ['#56b9cc','#c8f6f1','#25596a'],['#c4a66d','#f5e3b8','#6a5437'],['#c9b7d9','#fff0df','#64516f'],
- ['#e16a42','#ffd18a','#77392c'],['#b6ae5b','#f0e8a0','#5d5833'],['#655875','#c5b3d8','#393148'],['#bdc7d2','#f4eee2','#59616d']
+ ['#e16a42','#ffd18a','#77392c'],['#b6ae5b','#f0e8a0','#5d5833'],['#655875','#c5b3d8','#393148'],['#bdc7d2','#f4eee2','#59616d'],['#258de8','#a9e5ff','#1451b2']
  ];
  const p=palettes[k%palettes.length],c=p[0],light=p[1],shade=p[2];
  const block=(xx,yy,ww,hh,col)=>rect(Math.round(xx),Math.round(yy),Math.max(1,Math.round(ww)),Math.max(1,Math.round(hh)),col);
  // ぷにっとした輪郭と短い手足。敵ごとに頭身・シルエットを変える
  block(x+7,y+h-8,w-14,9,'#171722');
- const roundBody=[0,1,3,6,8,13,16,18,22].includes(k);
- if(roundBody){
+ const roundBody=[0,1,3,6,8,13,16,18,22,25].includes(k);
+ if(k===25){
+   block(x+18,y+2,w-36,8,c);block(x+12,y+8,w-24,8,c);block(x+7,y+16,w-14,15,c);block(x+4,y+29,w-8,17,c);block(x+7,y+44,w-14,10,c);block(x+13,y+54,w-26,3,c);
+   block(x+20,y+5,7,7,light);block(x+13,y+14,6,9,light);block(x+9,y+27,4,12,light);
+ }else if(roundBody){
    block(x+8,y+15,w-16,h-24,c);block(x+4,y+22,8,h-31,c);block(x+w-12,y+22,8,h-31,c);
  }else{
    block(x+10,y+18,w-20,h-27,c);block(x+5,y+25,9,13,c);block(x+w-14,y+25,9,13,c);
@@ -246,6 +249,12 @@ function drawEnemy(e){
  block(x+9,y+7,w-18,18,c);
  // 種族ごとの大きな特徴
  switch(k){
+ case 25: // 青ぷに：画像左上の青いしずく型スライム
+   block(x+18,y+1,18,5,light);block(x+13,y+7,28,5,'#54baff');block(x+8,y+13,38,5,'#1678d5');
+   block(x+9,y+22,5,17,'#1767c0');block(x+w-14,y+22,5,17,'#1767c0');
+   block(x+14,y+43,26,5,'#1767c0');block(x+19,y+49,16,3,'#1451b2');
+   block(x+13,y+16,6,8,'#c9f2ff');block(x+18,y+12,4,5,'#e8fbff');
+   break;
  case 0: // 森こぞう：木の葉の帽子
    block(x+5,y+2,w-10,7,'#4f874e');block(x+12,y-5,10,9,'#79b85c');block(x+25,y-2,12,7,'#a3cb68');break;
  case 1: // 苔の妖：苔むした背中
@@ -289,14 +298,14 @@ function drawEnemy(e){
    block(x+5,y+8,w-10,8,'#ded36c');block(x+11,y+12,8,5,'#f7ef9b');block(x+28,y+11,8,6,'#f7ef9b');break;
  }
  // 顔：敵ごとに目の色と表情を変える
- const eyeY=y+17,eye= boss?7:6;
+ const eyeY=k===25?y+27:y+17,eye= boss?7:6;
  const eyeColor=[3,18].includes(k)?'#efffff':([9,10,11,21].includes(k)?'#fff1a0':'#fff4c4');
  block(x+12,eyeY,eye,eye,eyeColor);block(x+w-12-eye,eyeY,eye,eye,eyeColor);
  block(x+14,eyeY+1,3,eye-2,shade);block(x+w-11,eyeY+1,3,eye-2,shade);
  if([0,1,4,7,13,15,16,17,19,22].includes(k)){
    block(x+16,y+29,14,3,shade);block(x+19,y+28,8,2,light);
  }else{
-   block(x+17,y+30,12,4,'#3b2430');block(x+20,y+31,6,2,light);
+   if(k===25){block(x+20,y+39,14,2,'#a83c42');block(x+22,y+40,10,2,'#ff9b82');block(x+18,y+43,3,2,'#1767c0');block(x+33,y+43,3,2,'#1767c0')}else{block(x+17,y+30,12,4,'#3b2430');block(x+20,y+31,6,2,light);}
  }
  // 小さな手足と靴でモンスターらしい立体感
  block(x+10,y+h-10,8,7,shade);block(x+w-18,y+h-10,8,7,shade);
