@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101b20"><title>エターナル・レルム | 3D RPG</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101820;color:#f5f1e7;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}canvas{display:block}#game{position:fixed;inset:0}#hud{position:fixed;inset:0;pointer-events:none}.panel{background:linear-gradient(135deg,#172a2ddd,#101b20dd);border:1px solid #c7a96b88;border-radius:12px;box-shadow:0 5px 24px #0006;padding:10px 13px}.stats{position:absolute;top:12px;left:12px;width:190px}.bar{height:9px;background:#333;border-radius:9px;overflow:hidden;margin:4px 0 8px}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#a52b2b,#e75c4b)}.bar.mp i{background:linear-gradient(90deg,#2362a4,#61c9ee)}#quest{position:absolute;top:12px;right:12px;max-width:220px;font-size:12px}#hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:12px;white-space:nowrap;color:#eee;background:#101820bb;padding:8px 12px;border-radius:20px}.hidden{display:none!important}#creator{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#07131ac9,#07131aeF),radial-gradient(ellipse at 50% 20%,#577b72,#111c20);z-index:5;padding:16px;overflow:auto}.sheet{width:min(460px,100%);background:#14252bea;border:1px solid #c9a86b;border-radius:18px;padding:22px;box-shadow:0 20px 70px #0009}.sheet h1{font-family:Georgia,serif;letter-spacing:2px;color:#e6c98a;text-align:center;margin:0 0 4px}.sub{text-align:center;color:#c5c4b8;font-size:12px;margin-bottom:18px}.field{margin:13px 0}.field label{display:block;font-size:13px;color:#e6d8b8;margin-bottom:7px}.choices{display:flex;gap:8px;flex-wrap:wrap}.choices button,.start{border:1px solid #9c875e;background:#263b3c;color:#fff;border-radius:9px;padding:9px 12px;font-size:13px}.choices button.active{background:#9a713c;border-color:#f1d39b}.start{width:100%;margin-top:18px;background:linear-gradient(90deg,#8d602d,#c49a55);font-weight:700;padding:13px;color:#fff8e9;font-size:16px}.note{font-size:11px;color:#aeb9b3;line-height:1.6;margin-top:12px}#mobile{position:fixed;inset:auto 0 18px 0;display:none;justify-content:space-between;align-items:end;padding:0 18px;pointer-events:none}.pad{width:116px;height:116px;border-radius:50%;background:#dce8e533;border:1px solid #fff6;position:relative;pointer-events:auto;touch-action:none}.nub{position:absolute;width:48px;height:48px;border-radius:50%;background:#e8d4aacc;border:2px solid #fff9;left:34px;top:34px}.actions{display:flex;gap:9px;align-items:end;pointer-events:auto}.act{width:58px;height:58px;border-radius:50%;border:1px solid #f5d99b;background:#263b3ddd;color:white;font-weight:700;touch-action:none}.act.big{width:68px;height:68px;background:#8b522ddd}
+@media(max-width:700px){.stats{width:150px;font-size:12px}.panel{padding:8px 10px}#quest{max-width:145px;font-size:10px}#mobile{display:flex}#hint{bottom:145px;font-size:10px}.sheet{padding:18px}}
+</style>
+</head>
+<body><div id="game"></div>
+<div id="hud" class="hidden"><div class="panel stats"><b id="heroName">冒険者 Lv.1</b><div>HP <span id="hpText">100 / 100</span></div><div class="bar"><i id="hpBar"></i></div><div>MP <span id="mpText">60 / 60</span></div><div class="bar mp"><i id="mpBar"></i></div></div><div class="panel" id="quest"><b>はじまりの草原</b><br>風の吹く草原を探索しよう。<br><span style="color:#d9c18c">目的：世界を歩いてみる</span></div><div id="hint">WASD：移動 / マウスドラッグ：視点 / Space：ジャンプ</div></div>
+<div id="mobile"><div class="pad" id="pad"><div class="nub" id="nub"></div></div><div class="actions"><button class="act" id="jump">跳</button><button class="act big" id="attack">剣</button></div></div>
+<div id="creator"><div class="sheet"><h1>ETERNAL REALM</h1><div class="sub">— エターナル・レルム —<br>新たなる冒険者を作成</div>
+<div class="field"><label>冒険者の名前</label><input id="name" maxlength="12" value="旅人" style="width:100%;padding:10px;border-radius:8px;border:1px solid #927d56;background:#0e1b20;color:white"></div>
+<div class="field"><label>髪の色</label><div class="choices" id="hair"><button data-v="#3a2418" class="active">黒</button><button data-v="#8b542b">茶</button><button data-v="#d7bd79">金</button><button data-v="#b9c7d4">銀</button></div></div>
+<div class="field"><label>服・鎧の色</label><div class="choices" id="armor"><button data-v="#526b83" class="active">青鋼</button><button data-v="#8b3434">深紅</button><button data-v="#477052">森林</button><button data-v="#b18b4c">黄金</button></div></div>
+<div class="field"><label>外見タイプ</label><div class="choices" id="body"><button data-v="0" class="active">剣士</button><button data-v="1">軽装</button><button data-v="2">魔導士</button></div></div>
+<button class="start" id="start">この姿で冒険を始める</button><div class="note">第1試作：3D草原の探索とキャラクター作成。戦闘・魔法・広大なマップはこれから追加していくよ。</div></div></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const mount=document.getElementById('game');
+let scene,camera,renderer,player,clock,started=false,yaw=0,keys={},move={x:0,y:0},jumpV=0,grounded=true,attackT=0,bodyColor='#526b83',hairColor='#3a2418',bodyType=0;
+const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+function box(parent,w,h,d,x,y,z,material){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);parent.add(o);return o}
+function sphere(parent,r,x,y,z,material){const o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),material);o.position.set(x,y,z);parent.add(o);return o}
+function makeTree(x,z,s=1){const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);const trunk=mat('#59432d'),leaf1=mat('#31583d'),leaf2=mat('#456e46');const t=new THREE.Mesh(new THREE.CylinderGeometry(.18*s,.28*s,2.2*s,8),trunk);t.position.y=1.1*s;g.add(t);for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry((1.15-i*.18)*s,2*s,8),i%2?leaf2:leaf1);c.position.y=(2.1+i*.78)*s;g.add(c)}}
+function makeRock(x,z,s){const o=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),mat('#777b75'));o.position.set(x,s*.45,z);o.rotation.set(.2,.7,.3);scene.add(o)}
+function createWorld(){scene=new THREE.Scene();scene.background=new THREE.Color('#9bb8c4');scene.fog=new THREE.Fog('#a9bdb8',35,115);scene.add(new THREE.HemisphereLight('#e2f0ff','#526044',2));const sun=new THREE.DirectionalLight('#fff0d2',2.2);sun.position.set(-25,45,20);sun.castShadow=true;scene.add(sun);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(240,240,50,50),mat('#58764a'));ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
+const patch=mat('#71885a');for(let i=0;i<150;i++){let x=(Math.random()-.5)*180,z=(Math.random()-.5)*180;const s=.25+Math.random()*.5;const tuft=new THREE.Mesh(new THREE.ConeGeometry(.11,s,4),patch);tuft.position.set(x,s/2,z);scene.add(tuft)}
+for(let i=0;i<65;i++){let a=Math.random()*Math.PI*2,r=20+Math.random()*80;makeTree(Math.cos(a)*r,Math.sin(a)*r,.7+Math.random()*.8)}
+for(let i=0;i<45;i++){let x=(Math.random()-.5)*100,z=(Math.random()-.5)*100;if(Math.hypot(x,z)>10)makeRock(x,z,.35+Math.random()*.9)}
+// distant mountains
+for(let i=0;i<18;i++){const m=new THREE.Mesh(new THREE.ConeGeometry(8+Math.random()*8,18+Math.random()*22,7),mat(i%2?'#718783':'#7f9690'));let a=i/18*Math.PI*2;m.position.set(Math.cos(a)*100,8,Math.sin(a)*100);scene.add(m)}
+// path and ruins
+const path=new THREE.Mesh(new THREE.PlaneGeometry(7,90),mat('#a28c68'));path.rotation.x=-Math.PI/2;path.position.set(0,.005,-48);scene.add(path);
+for(let i=0;i<4;i++){let x=(i%2?1:-1)*7,z=-25-Math.floor(i/2)*9;box(scene,.8,5,.8,x,2.5,z,mat('#8b897a'));box(scene,3.8,.7,1,x,5,z,mat('#aaa28a'))}
+}
+function makePlayer(){player=new THREE.Group();scene.add(player);const armor=mat(bodyColor,.48,.35),dark=mat('#292f36'),skin=mat('#d3a783'),hair=mat(hairColor),gold=mat('#c6a45d',.35,.65),cloth=mat(bodyType===2?'#55447c':bodyType===1?'#554b3c':'#343d4c');
+const torso=box(player,.9,1.15,.48,0,1.75,0,armor);torso.rotation.z=-.04;
+box(player,.94,.22,.52,0,1.12,0,gold);box(player,.35,.75,.38,0,2.48,0,skin);sphere(player,.39,0,3.02,0,skin);sphere(player,.4,0,3.22,-.01,hair);
+box(player,.52,.12,.46,0,3.32,-.02,hair);box(player,.12,.09,.06,-.16,3.03,.35,dark);box(player,.12,.09,.06,.16,3.03,.35,dark);
+for(const side of [-1,1]){const arm=box(player,.27,.9,.3,side*.62,1.8,0,armor);arm.rotation.z=side*-.12;box(player,.3,.18,.34,side*.64,1.27,.02,dark);box(player,.34,.95,.36,side*.27,.53,0,cloth);box(player,.39,.2,.48,side*.27,.08,.08,dark)}
+// sword on right side
+const sword=box(player,.1,1.45,.12,.92,1.65,.05,mat('#c8d2d8',.22,.8));sword.rotation.z=-.12;box(player,.2,.12,.2,.92,.92,.05,gold);
+return player}
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}
+function init(){renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;mount.appendChild(renderer.domElement);camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,300);camera.position.set(0,5,9);clock=new THREE.Clock();createWorld();player=makePlayer();player.position.set(0,0,0);addEventListener('resize',resize);resize();renderer.setAnimationLoop(loop)}
+function loop(){if(!renderer)return;const dt=Math.min(clock.getDelta(),.04);if(started&&player){let dx=(keys.KeyD?1:0)-(keys.KeyA?1:0)+move.x,dz=(keys.KeyS?1:0)-(keys.KeyW?1:0)+move.y;const len=Math.hypot(dx,dz);if(len>.08){dx/=Math.max(1,len);dz/=Math.max(1,len);const a=yaw;const wx=dx*Math.cos(a)+dz*Math.sin(a),wz=-dx*Math.sin(a)+dz*Math.cos(a);player.position.x+=wx*dt*6;player.position.z+=wz*dt*6;player.rotation.y=Math.atan2(wx,wz); }
+if(!grounded){jumpV-=18*dt;player.position.y+=jumpV*dt;if(player.position.y<=0){player.position.y=0;jumpV=0;grounded=true}}
+if(attackT>0){attackT-=dt;player.rotation.y+=Math.sin(attackT*18)*.035}
+const target=new THREE.Vector3(player.position.x-Math.sin(yaw)*.5,player.position.y+2.1,player.position.z+Math.cos(yaw)*.5);const desired=new THREE.Vector3(player.position.x+Math.sin(yaw)*3,player.position.y+5.2,player.position.z+Math.cos(yaw)*7.5);camera.position.lerp(desired,.08);camera.lookAt(target);
+}renderer.render(scene,camera)}
+init();
+const pick=(id,fn)=>document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('active'));b.classList.add('active');fn(b.dataset.v)});
+pick('hair',v=>hairColor=v);pick('armor',v=>bodyColor=v);pick('body',v=>bodyType=+v);
+document.getElementById('start').onclick=()=>{if(started)return;scene.remove(player);player=makePlayer();started=true;document.getElementById('creator').classList.add('hidden');document.getElementById('hud').classList.remove('hidden');document.getElementById('heroName').textContent=(document.getElementById('name').value||'冒険者')+' Lv.1'};
+addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='Space'&&started&&grounded){jumpV=8;grounded=false;e.preventDefault()}if(e.code==='KeyJ'&&started)attackT=.45});addEventListener('keyup',e=>keys[e.code]=false);
+let dragging=false,lastX=0;renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX});addEventListener('pointerup',()=>dragging=false);addEventListener('pointermove',e=>{if(dragging&&started){yaw+=(e.clientX-lastX)*.004;lastX=e.clientX}});
+document.getElementById('attack').onclick=()=>{if(started)attackT=.45};document.getElementById('jump').onclick=()=>{if(started&&grounded){jumpV=8;grounded=false}};
+const pad=document.getElementById('pad'),nub=document.getElementById('nub');let padId=null;pad.addEventListener('pointerdown',e=>{padId=e.pointerId;pad.setPointerCapture(padId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let x=e.clientX-cx,y=e.clientY-cy,l=Math.hypot(x,y),max=35;if(l>max){x=x/l*max;y=y/l*max}nub.style.transform='translate('+x+'px,'+y+'px)';move.x=x/max;move.y=y/max}function padEnd(){padId=null;move={x:0,y:0};nub.style.transform=''}pad.addEventListener('pointerup',padEnd);pad.addEventListener('pointercancel',padEnd);
+</script></body></html>
