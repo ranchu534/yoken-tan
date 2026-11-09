@@ -115,7 +115,7 @@ function drawTerrain(){
 function drawPlayer(){
  const p=player,x=p.x-cam,y=p.y;
  if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
- const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/5)%2:0;
+ const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/5)%4:0;
  const air=!p.on,punch=p.atk>0;
  // 128x128 pixel-art sprite with finer highlights and seams
  if(!drawPlayer.sprite){
@@ -167,25 +167,42 @@ function drawPlayer(){
   P(23,37,2,8,giShade);P(43,37,2,8,giShade);P(26,48,18,2,black);
   P(27,34,2,5,giHi);P(40,35,2,4,giHi);
   P(17,62,8,1,'#fff');P(46,62,8,1,'#fff');
-  // Fine 1-pixel accents at native 128x128 resolution
+  // Fine highlights at native 128x128 resolution
   g.setTransform(1,0,0,1,0,0);
   P(52,27,27,2,'#ff9b8c');P(57,29,31,1,'#7e202d');
   P(54,64,3,19,'#ffffff');P(82,67,2,15,'#ffffff');
   P(43,93,39,2,'#858893');P(47,98,35,2,'#ffffff');
   P(61,102,3,8,'#d8cbb2');P(66,110,3,5,'#17161c');
   P(36,119,17,2,'#f7f5ee');P(92,120,17,2,'#f7f5ee');
-  // punch pose: extend foreground fist to the right
-  drawPlayer.sprite=c;
+  // Build four distinct 128x128 walk-cycle frames
+  drawPlayer.frames=[];
+  const legPoses=[
+   [[21,55,9,5],[18,59,10,3],[16,61,10,2],[14,61,12,2], [40,55,9,5],[42,59,10,3],[45,61,10,2],[44,61,12,2]],
+   [[20,55,9,5],[22,59,10,3],[24,61,10,2],[22,61,12,2], [39,55,9,5],[39,58,10,3],[41,60,10,2],[40,61,12,2]],
+   [[22,55,9,5],[25,58,10,3],[28,60,10,2],[27,61,12,2], [38,55,9,5],[35,59,10,3],[32,61,10,2],[31,61,12,2]],
+   [[21,55,9,5],[19,58,10,3],[17,60,10,2],[15,61,12,2], [40,55,9,5],[42,58,10,3],[44,60,10,2],[43,61,12,2]]
+  ];
+  for(let n=0;n<4;n++){
+   const fc=document.createElement('canvas');fc.width=128;fc.height=128;
+   const fg=fc.getContext('2d');fg.imageSmoothingEnabled=false;fg.drawImage(c,0,0);fg.scale(2,2);
+   fg.clearRect(10,54,46,10);
+   const cols=['#e9e6dc','#a9aab2','#514b54','#c8c5c4'];
+   for(let k=0;k<8;k++){const q=legPoses[n][k];fg.fillStyle=cols[k%4];fg.fillRect(q[0],q[1],q[2],q[3]);}
+   // trouser crease pixels
+   fg.fillStyle='#fffdf4';fg.fillRect(24+(n*2)%5,56,2,3);fg.fillRect(39-(n*2)%5,56,2,3);
+   drawPlayer.frames.push(fc);
+  }
+  drawPlayer.sprite=drawPlayer.frames[0];
  }
- const destW=48,destH=48;
+ const destW=48,destH=48;const sprite=(moving?drawPlayer.frames?.[frame]:null)||drawPlayer.sprite;
  ctx.save();ctx.imageSmoothingEnabled=false;
  ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x+p.w/2,y+p.h+1,17,3,0,0,Math.PI*2);ctx.fill();
- if(p.dashTimer>0){ctx.globalAlpha=.28;ctx.drawImage(drawPlayer.sprite,x-9-p.face*7,y-1,48,48);ctx.globalAlpha=1}
- ctx.translate(x+p.w/2,y+p.h/2+(moving?Math.abs(Math.sin(p.anim*.8))*1.5:0));
+ if(p.dashTimer>0){ctx.globalAlpha=.28;ctx.drawImage(sprite,x-9-p.face*7,y-1,48,48);ctx.globalAlpha=1}
+ ctx.translate(x+p.w/2,y+p.h/2+(moving?Math.abs(Math.sin(p.anim*.42))*1.2:0));
  ctx.scale(p.face||1,1);
  if(air)ctx.rotate(-.08);
- if(punch){ctx.drawImage(drawPlayer.sprite,0,0,128,128,-destW/2+2,-destH/2,destW,destH);ctx.fillStyle='#ffe7a5';ctx.fillRect(18,-1,5,2)}
- else ctx.drawImage(drawPlayer.sprite,-destW/2,-destH/2,destW,destH);
+ if(punch){ctx.drawImage(sprite,0,0,128,128,-destW/2+2,-destH/2,destW,destH);ctx.fillStyle='#ffe7a5';ctx.fillRect(18,-1,5,2)}
+ else ctx.drawImage(sprite,-destW/2,-destH/2,destW,destH);
  ctx.restore();
 }
 function drawEnemy(e){const boss=!!e.boss;let x=e.x-cam,y=ground-(boss?75:43)+(e.yoff||0);if(x<-90||x>W+90)return;const colors=['#668a9d','#4b9a75','#6b3c8e','#4c9eb4','#4b8b76','#3979a8','#b28b54','#d0d0b2','#8c5b9f','#c45b36','#a64a32','#e17a35','#55546e','#d78b48','#9c3b62','#6d9b58','#8a5c9d','#416f58','#54b9cb','#b69a64','#c7b4dc','#d85b36','#a7a04d','#51445f','#b8c0ce'];const c=colors[e.kind]||'#668a9d';const bw=boss?54:32,bh=boss?58:32;rect(x+5,y+bh,bw-8,7,'#171722');rect(x+5,y+12,bw-10,bh-8,c);rect(x+2,y+5,bw-4,18,c);
