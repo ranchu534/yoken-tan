@@ -68,15 +68,13 @@ canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 </div>
 </div>
 <script>
-const bluePuniImage=new Image();bluePuniImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAABOCAYAAAC60+EBAAATNElEQVR42uVde1BUZ5b/fbe7b794XARBeRkR0kRqTVgxY7IzKKlRJ0lZwRFB4zhxtUKmVpNKNEFEazO7K2pikklMypk4hWNeCjimRNdENDMakzVsgsWsU1pQCBEEwsvQgP26/bj7R/PRt7tvP2mUSU4V1XT3vd33/u7vO+d3znfu16T93nstEJkgCB8mDAw8BwCxer0BPwAb5jhtrF5vGOY47a3ExO9D2ZfiQbEY5jhtMNgQMbCCIGye09r6R/yAbZjjtIPTpz9JCHknRIA3JwwMHBEDTC+WFMjjwMb390/7oTA0EHMnCLAbgz0/dxzYtqysKrqhL/R/aOCKh/IYwPsJIb8KFWAADdfM5j8tv3nT5gkwoRueSkuT0w1+DOYJ8Km0NPlclepfQ2WwLz9MgnXGd88EIn7GZW5X6q/vEQVcIkTSRUwQ4M2UwUysXm/4RwCVVOwkADBcLOMj/S3UDdJRO6e19Y/x/f3TxoZ70EYIeSdHrTa0ZWU9TabuYPUG1e3d3buESLI2QJAL2QczUx1ULnO7cpxZtXY27VOdBgBSVtdGTda3UwZTgOe0tm4cY/DmYFlMpjqwlLFFbQ+QYzWr7O7+tlzl8rdEcO0XOQZLxaBgWEymOqgQAC5ru3LJ/PnW8+03nhpnVXKyua1u7RGv7d1PL+IAB6skyJQGdVwF7DUDQMJP9r/Hm+WPAwCrsp3+Q8OzG4oIHN5KYXLADUULk6kMKqnYSYTdlQ4us1wlj4t/Upuz9oDbCTbsqx3+pWa9sLvSQSp2MLG1dhYAIi3HggW4LSvracpeZqqCSs0sCIw8WvaYqf/Gbz3fs5r4xTSYxdbaWW1ermIy5Ji/ICcOdGKZNkVVgZOtsbV2tqILCpvJWEhfz1+SIHnMMdFz5QCQaSlVk4qdREqiTTbAp9LS5FRFTFlgxSaPnS3IuBwNBTVRF+/zuI3dDUxy+zxtMKMh0rb85k0bZS8zFd0AZVtM9Fz58Jf96mA+xa5TElmLRfAMfHf6bCh7pxxjxWCMjF7zKgrl61zXQcblaOw6JSEVOxhDY5NVDG5y+zztnfS3Uz7zomA8bX5Rrs3LVVy51L5Qe19RiSNqXrQuyXt7lcm2XNhd6dDm5Sroa48nL7Xc7fNgphpby+w2lNlt2P86ZzM0Nlm//fqbNQAQn5XhJZvicgujGC5jUcKCfRsMjU1WTcpCBwCcOX+K/ZED6+5fn1kp8ADw7nHCAoA8WvYYTQgAIIlzbp6d7ny81dpO+v7WtNI22rNYHi17bM9r6Wa7TjkltLl8qhRZnlkp8O038si5y5cV2rxcxabqfhXYpCdg9pZZzZ1O8jpZnBE1eL5ysVytOTGllMzdHvrPrBT4IWu5vP3GZwQAlsyfbz1WXWSRJesVlK3+5JXYLnVBLmuxCHadkhgam6zIkP2YgPWWV0Pdn9kB4G+pD6rGBJehyfrVI9oZqSw7M4+lQz9Y06QsdMhaLPJhtPCu75y81HbK+Vj99T2W9ht5BAAuEYfG2N3AGLsbmJTVNdH6EaxgZ+axvjItLxbLOW74y361Xackxu4Gxq5TkjK7bdLrBVMEWHe2lm7Ru0mk7uqSUZXJtlz/1cWrPJn1FAUvX0fc9CsNYBR0GZejiU1ONsf+NNFElUGwtYh/YGAF4vqT8IvEoQGA0z1nlXOe+OhJhstYFJO9jBNHf7FdbBHGX6dBLC63MMoWV3Do/aK3Dxq7GxiqY1+V3b0QIp9sVvoosQirSo7JDr6xigfAHwOw4Nmv/qXlYtN+7YwBlroAytKls50TB2e/9R+MTL0tBXBYVh2sjjuUtbVDIewucXCZ9rFZBupnxbMMk+d75ZMCpgCAAGYBREWIAxDItm3lZMhaLj9z/hRr19WQmCfyZSmkxq4y2ZbzZlLQPzprXVzuLL8VLF++tr/llmv4M8pFc574yGzsbjiVsrom2tDYZKXzYz0ZOwzCbgjuxxz56RwgIoVud1C3bSsffz5kLZcPdX9mv0QcmocFxug5ZwUAMfcfGLTrrxpjspdx7Mw8NlEXz2SnE+iSXAmBpysQuwEAEAPLf9fIjzTX6xVq9sLKl8ufq1qTpBfvn7K6Jron48r4/JX7bK/7qLqLwDpB9RT5cSk/l53uOat8PHmp5XTPWSUNTqd7zipVJttyAGC4jEU8mfWUJ/vEoEq5gD69gJY+90TBjbEAhppO3NbOSGXluF3DqoTzZrX8lK8z6Mm4YoittbPSUzvhg0siAepwsYwvs9vQfiOPXCIOjSZloaNAiLHaF/Aa8R5nD/9l33CvfgUNOJ6SqXSJ6ykFFQA+aHK9TkEVA5udTtDcKUgCLH4+/Z7Y59rq1h4p3TLExin22o6edVbHKIO92Rs+sPJIDP9MS6m6vetrMxXnxu4G5jSgRB3slKFtdWuPzFrfsy5uprtkkjIxqLRGQF2Ap+TyZ3G5hVHUPRh6u3jeTAoWPPvV939p+2SaWf3Pp6ADZC0WARn+zjM8cMlEQaVz/lQ6dVeXjFJfZvm27x1Tb0uBjMvR0JOkLM1Od2rTPr2AJM71KAaVugApUAFgVipDOrocbm9KMdeTxXb9VSMAcA/l53RXl4xmbe3QXlceNEn72/CAlU8EVAAos9vwIXFoejKuGJLb5yFldU00rZM6uHtW8GY5T0GVYhkNUL5A7dP7BlXq9ex0gv4W/2ch43I0AMAM2d9IWV2zxfLXz4U06DQjmdttvqfRJw1YCX0qACh3DiehutLRJgiG1AdfW2/qv/HbhIIdiSwAcaQXm7ho7Tn0pUyXBJgV7mDO0grCLFFGRplN5drFc4MOX+5hjL0r7M1Xl6mncc8PNlV+7ByBMsadueG5AxI2qGPS6t3jhKXVe5XJttwWV3CI/66RZ2fmjRebxbrUMzWVYqkviRWq+VINYuO/a+QBQKMa/c2tq3//WH99r9m9dSk8d0DC9atUBXxQXSSoCHHE3H9gUMwIT5Z6ZlFSJh7+4ujvz6cGC7A/cMW+l/rd9Nz3o+w6JemuLr4dDrgh1wro9En7jTxSUl2EnMIjq2cuOzminZHKamekslK+VGquyhNQMVulQAWAcEClxxJsTXfM70bTmQjX5GZohZyQ5dZwsYxvH+v8iyns4wZuDO8HhscDlHjYi7MnX0yVGv66JG9w83UkbJfgabda24nnHJrz+AujhppOrGA6WpXaBxZuMjQ2WYeLZTx2T0p1y/1KldltuEQcmlUlx2QXG81Wz4DgydKls+1BBSexSTF2oqCKXYHUxKTYrCZ+scpkWz6R6fOQGEsqdpL2tjzSXbNq9PyCfRv45oFXpZgqJZ+CYepEg5R46Dd3Cm7uyJ9S8Emp3ZWOrK0d2lbAGGFgvdvVLxGHxiwIhtSFby/yWc0Pw8IB1VfUpzo2Oz24Kpm4QhaXWxg11ATwZlKQsGCfaqDu90eAPQi1EkaCAZY2qOmv7zUnLNi3QT0t5SFm5uJ14ujvKaN8+VVPplIFIBXgfAUxnxfHg41S5Ud/jBUDTKtk8dN+Mrez6de3vYOXf3DlAdkqAGXlNrwrugbDvfoVNOeXyteDARQAOgyEdPQJAgCsy3U/X3HhRYqp2ekEu37hcPv8i+fcQQol+Hlub+jt4gFnTxiagPTcD7SdTesMwSYOAYdK6Va9giYBZkFgwCgX+ds+2EDVYSCko8shSM1niVNdX/JJKtHYuXk6Q1nq6R4CuZpAOnc80wwicfLDWNcOQ92f2Vf+1wuaM3UX7ACg5hJ4vlfvlgBIARMom6KaVHwh/r3shcMAILtleeLlqgNxS2cDO88wbsFJzNR5aWlGABAYW/XfO77b4FQgQP45RNxuPtpiJDt2ElQ4n7tquNLMDcjYS8QxDuqm6v4YWk+lV9gT1EDzUv7sxNE/F584+udie7yyLqiozdiqg72Q4ZqlrXPVxqN9XFHbAyTtU50muX2e1ruT0Zu5TCB5JWuxCCX7inlLW+eqY3uPX4/LLYyKyy2M8jcv5ZlJeQ7JQMPyvarflwYrrQBg5PbQb0J1RYHcQVxuYVRCwY5Ebc7aA3Vv1rx17vJlRdHJdVbPHtyQfSyVVyOj12wPp8Im9q2JunjGl2/0x54OA/G7w8qlyy0rly4Pumy3omQ1U7imqFbqOz2D0cVzg45QNKxbocYsf1weF//kG2lk/NiS2+dp/bXjB0wQtHm5ik+r+1XUt4plkr8AI61TBa+rvfOM8/x3/cKBl6sOxAHAy1UHePq6lOVv/d6RvySB2fXq79YDwH+OPTr3ESakq4NJJAyNTVZxP25IjPWsppv0g6y/qB1O6kqHdnOnIOk66HvB2NlvZV7b0+fBfkYkLSBjDY1N1th9xTze9Gag2BWEWktt7hTQdaHeTJszDp5z4KBbvuJfczZ3Csjf+r3DxU4H+ltuOcRsDUpChWGB2OqHsUQQS4jdqbB6DRndxGbO+1tuOYxfbHTw3zXy4TLKc8jTzIn+BapwhfOdUvdFhJwg+G5mcDHRV5T3F/0/rnihV197vxkARprr9df+sKW360K9OVyWZacTdF2oN7e+V17dcThZNfzlfm64YV9tqL41f0kC4zPI2fR6L3wqd4WTebm0mYoQBxyWzyNVOJFxORrb9OIRgbFVywdqY1aR+umPqk+YstMJOg4nq4JhHLVvtivZD9ay7LKWLYpC86lVAEDvvfVngUqHgawn44qBy6JFcO8EwY+PFTeQOe+2HrgxPD6MPStHFGRfrUFiDapbvTEGQExL5REAwINctGOx+fI0fLAAezaW2IAXnDtcdz6kVtXIv3hpl5s7+tm+nYovXtplnb2xxMZ/0TQeNQ/T4134UnGoSsCXsayhTGPTnV1Vckx2iTgUtMHD34xuwOoWqdhJ6J1+mpSFjr7PTndQAS01+xqIrWIm0nmmklyT8kXz5WkAMPfM/ym6NpYE5cfEgJ7RaG0A8NLQw7doH9hE5dXg+cp+hZq9oG/+3a9JxQ4muX2e1rtrRroQE1AVCLt3CVhdC0Njk7W7usTMZb/wiUOZ9dhEynnUKHM/vVBvPv7FKcOKxFjlgQdyg16fhv1ZrgwARrqbhe0Xu6wAkFC8IzHSKmDLTUF5qGA76Sn21YoUMrBE4DLLVQ8L843/Gz1X3SsIzIz7tsDZSVIYJeUSQlUGibp4hp2Zx+JnVXw9YGXUJ0z/VnVIGyzAX+tHmcM3rqtnLjs5Em4yIKUYoqO+t8i4HA0MnaVvpBELl1muChbUIFyByx3E1trZ3tY9fOqDr60Ho1ykva+oROoAQ00bxS1HVNsa/uepI24H6ZCv9rW/bXrxiLiFKVRgPY+XFrgBILmo7L7W12cZsrZ2aFtfTzdKx6GwgXUHV399r3nj0T6u7s2at3iz/HHPOa9w83Gx0S5B2mMFuNqCPC0cQP367TFg1dO4539Z8OJ/1558hfEOUmSirsDd1w5X7OTTP30/SvYNawTfV8dYjARAsTjiU4CDaZLwZS6wggdNakrb1wjJTid+gxX3UP6m7uqS0dpRe9gdMSF3wngy99je49fFYNChPVnpZKBMKlx9KmZq3COl9cbuBgYA7lgnDOBs2uAyy1VVa5L0LNNdKh6yoYj7SFogQH0FqqGmE7cHz1f2mzrOn5jxwMPlcY+U1lv++jmRtVgEcUt9qBZCviyqkgsA2eGsRWZaStX5eSpF3Zs1b9FeWF++z98wjARj47MyhI7DyapZ63vMgXy4XX/VKONyNKzKdjp2Rnz9cE+PSjkn/Rjg7J4cGb1mGy6W8YH0agQYK/pg4pIdxu4GpmpNkl7Dc5vU07jnWZXttD95NVklPMrYdR/xvNQwp12F4qDIWFo/Uc5O2sxk/rQuLr+4pifjioGCGkwFK0KMlWAunK2cr8rk2PBPz8VUrUnSmwWBSV349p9MvS0FnnsmFERevAeywfOV/fKB2hjb9GI3naueoTsfOyO+3tppPwm4lj4R35bfk3HF4CRQ6G2cYdyD4F5DePc4YVEM/kzdBTuXWa6as6ZWoeG5TZjGLbWZjIXy2NkCACi4e1ZIMckrm/JIRaW2kczCJPZjZ+axMi5HQ9S/OqkAII9OvkArVRqeO2tWy0nPo9eMsbV2Votcxc1HW4xiFcRlNin1gOUOMdY3e+lyeVLVpY1H+7jj/7F3v9XEL75TbFWo2Qvy6OQLg9+8dMgnABU7GKFylyCNxF25Hck3wJ6rB1Gg03PfjxoZvWaTR8sC1hpso/ZP/G0n+b6c42jd1DZq/0T8/TQlpetzAYB7Z8uUBFaCvR4ugzIa5A7f4i4IJLizjPAtn5O34Lnv9bToGoSBjLLL13TIkvnzrXSpE8B99pT+7wpAkw+mF2MjD67/tvJILo8XbLXpToIKAISuSz05q8r7BpjeKnrnAZ18UIGxH5gQ/7jEMMdpL0ZHWwAgf3RUCUxkxfnwVrag2rjMbvO5mIPv+17F6xI4X3ORZnJuofcJrNPHu//kxyRHFBIss7Zt2yaZHb7yyl4/wN45ZgZMEAgh79xKTHynbfr0DwE0jGdLAwNHLkZHWyLrJogQHMgCAcqD+qy2rKynASwE7hW9l0X/aQCAO/k7Ov8PT3B74R5jRaMAAAAASUVORK5CYII=";
-
 (()=>{
 const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
 const hpFill=document.getElementById('hpFill'),kiFill=document.getElementById('kiFill'),hpText=document.getElementById('hpText'),kiText=document.getElementById('kiText'),xpFill=document.getElementById('xpFill'),xpText=document.getElementById('xpText'),levelText=document.getElementById('levelText'),countEl=document.getElementById('count'),msg=document.getElementById('message'),start=document.getElementById('start');
 let W=800,H=450,last=0,started=false,won=false,lost=false,cam=0,kills=0,shake=0,levelUpRecovery=false;
 const keys={left:false,right:false,smallJump:false,bigJump:false,dash:false,attack:false,special:false,tenpu:false};
 const worldW=2200;let ground=370;let stageIndex=1;
-const stagePlatforms={1:[[430,-62,130],[900,-105,120],[1370,-58,150]],2:[[300,-55,150],[680,-100,110],[1050,-65,150],[1480,-115,130]],3:[[380,-65,140],[760,-115,150],[1160,-165,130],[1540,-95,170]],4:[[350,-70,130],[720,-125,130],[1110,-75,150],[1510,-135,140]],5:[[330,-90,150],[700,-145,140],[1080,-90,160],[1480,-160,150]]};const stageNames=['','第一章：鳥居の森','第二章：霧の川','第三章：朽ちた社','第四章：鬼火の谷','第五章：妖魔城'];const stageEnemies={1:[{x:330,hp:35,max:35,kind:0,name:'森こぞう'},{x:475,hp:42,max:42,kind:25,name:'青ぷに'},{x:620,hp:45,max:45,kind:1,name:'苔の妖'},{x:900,hp:48,max:48,kind:15,name:'木霊の弓使い'},{x:1200,hp:55,max:55,kind:16,name:'毒花蜘蛛'},{x:1500,hp:48,max:48,kind:0,name:'森こぞう'},{x:1800,hp:125,max:125,kind:2,name:'森の大鬼',boss:true}],2:[{x:320,hp:55,max:55,kind:3,name:'水の亡霊'},{x:600,hp:65,max:65,kind:4,name:'河童'},{x:900,hp:72,max:72,kind:17,name:'沼ぬし'},{x:1200,hp:62,max:62,kind:18,name:'泡吹き魚人'},{x:1500,hp:70,max:70,kind:3,name:'水の亡霊'},{x:1800,hp:170,max:170,kind:5,name:'川龍',boss:true}],3:[{x:300,hp:70,max:70,kind:6,name:'灯籠おばけ'},{x:580,hp:75,max:75,kind:7,name:'狛犬'},{x:850,hp:90,max:90,kind:19,name:'からかさ小僧'},{x:1120,hp:85,max:85,kind:20,name:'お札の式鬼'},{x:1450,hp:90,max:90,kind:7,name:'狛犬'},{x:1800,hp:205,max:205,kind:8,name:'社の怨霊',boss:true}],4:[{x:300,hp:90,max:90,kind:9,name:'火車'},{x:580,hp:95,max:95,kind:10,name:'炎の武者'},{x:850,hp:105,max:105,kind:21,name:'火喰い天狗'},{x:1120,hp:110,max:110,kind:22,name:'溶岩なめくじ'},{x:1450,hp:110,max:110,kind:10,name:'炎の武者'},{x:1800,hp:250,max:250,kind:11,name:'業火鬼',boss:true}],5:[{x:300,hp:115,max:115,kind:12,name:'影の兵'},{x:580,hp:125,max:125,kind:13,name:'妖狐'},{x:850,hp:135,max:135,kind:23,name:'夜叉の鎖使い'},{x:1120,hp:145,max:145,kind:24,name:'骸骨武者'},{x:1450,hp:140,max:140,kind:13,name:'妖狐'},{x:1800,hp:330,max:330,kind:14,name:'妖魔王',boss:true}]};
+const stagePlatforms={1:[[430,-62,130],[900,-105,120],[1370,-58,150]],2:[[300,-55,150],[680,-100,110],[1050,-65,150],[1480,-115,130]],3:[[380,-65,140],[760,-115,150],[1160,-165,130],[1540,-95,170]],4:[[350,-70,130],[720,-125,130],[1110,-75,150],[1510,-135,140]],5:[[330,-90,150],[700,-145,140],[1080,-90,160],[1480,-160,150]]};const stageNames=['','第一章：鳥居の森','第二章：霧の川','第三章：朽ちた社','第四章：鬼火の谷','第五章：妖魔城'];const stageEnemies={1:[{x:330,hp:35,max:35,kind:0,name:'森こぞう'},{x:620,hp:45,max:45,kind:1,name:'苔の妖'},{x:900,hp:48,max:48,kind:15,name:'木霊の弓使い'},{x:1200,hp:55,max:55,kind:16,name:'毒花蜘蛛'},{x:1500,hp:48,max:48,kind:0,name:'森こぞう'},{x:1800,hp:125,max:125,kind:2,name:'森の大鬼',boss:true}],2:[{x:320,hp:55,max:55,kind:3,name:'水の亡霊'},{x:600,hp:65,max:65,kind:4,name:'河童'},{x:900,hp:72,max:72,kind:17,name:'沼ぬし'},{x:1200,hp:62,max:62,kind:18,name:'泡吹き魚人'},{x:1500,hp:70,max:70,kind:3,name:'水の亡霊'},{x:1800,hp:170,max:170,kind:5,name:'川龍',boss:true}],3:[{x:300,hp:70,max:70,kind:6,name:'灯籠おばけ'},{x:580,hp:75,max:75,kind:7,name:'狛犬'},{x:850,hp:90,max:90,kind:19,name:'からかさ小僧'},{x:1120,hp:85,max:85,kind:20,name:'お札の式鬼'},{x:1450,hp:90,max:90,kind:7,name:'狛犬'},{x:1800,hp:205,max:205,kind:8,name:'社の怨霊',boss:true}],4:[{x:300,hp:90,max:90,kind:9,name:'火車'},{x:580,hp:95,max:95,kind:10,name:'炎の武者'},{x:850,hp:105,max:105,kind:21,name:'火喰い天狗'},{x:1120,hp:110,max:110,kind:22,name:'溶岩なめくじ'},{x:1450,hp:110,max:110,kind:10,name:'炎の武者'},{x:1800,hp:250,max:250,kind:11,name:'業火鬼',boss:true}],5:[{x:300,hp:115,max:115,kind:12,name:'影の兵'},{x:580,hp:125,max:125,kind:13,name:'妖狐'},{x:850,hp:135,max:135,kind:23,name:'夜叉の鎖使い'},{x:1120,hp:145,max:145,kind:24,name:'骸骨武者'},{x:1450,hp:140,max:140,kind:13,name:'妖狐'},{x:1800,hp:330,max:330,kind:14,name:'妖魔王',boss:true}]};
 let player,enemies,shots,hostileShots,particles,waves;
 function resize(){const r=canvas.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.max(1,Math.floor(W*d));canvas.height=Math.max(1,Math.floor(H*d));ctx.setTransform(d,0,0,d,0,0);ctx.imageSmoothingEnabled=false;ground=Math.max(130,Math.min(370,H*.78));if(player){player.y= Math.min(player.y,ground-player.h);}}
 window.addEventListener('resize',resize);resize();
@@ -117,7 +115,7 @@ function drawTerrain(){
 function drawPlayer(){
  const p=player,x=p.x-cam,y=p.y;
  if(p.inv>0&&Math.floor(p.inv/3)%2===0)return;
- const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/1.5)%16:0;
+ const moving=Math.abs(p.vx||0)>.1&&p.on,frame=moving?Math.floor(p.anim/3)%8:0;
  const air=!p.on,punch=p.atk>0;
  // 128x128 pixel-art sprite with finer highlights and seams
  if(!drawPlayer.sprite){
@@ -188,22 +186,13 @@ function drawPlayer(){
    [[20,55,9,5],[19,58,10,3],[18,60,10,2],[17,61,12,2],[39,55,9,5],[41,58,10,3],[43,60,10,2],[44,61,12,2]],
    [[21,55,9,5],[18,59,10,3],[16,61,10,2],[15,61,12,2],[40,55,9,5],[42,59,10,3],[45,61,10,2],[44,61,12,2]]
   ];
-  // 8つの基本ポーズの間を補間し、16コマの滑らかな歩行にする
-  for(let n=0;n<16;n++){
-   const pose=n/2,base=Math.floor(pose)%8,t=pose-base,next=(base+1)%8;
+  for(let n=0;n<8;n++){
    const fc=document.createElement('canvas');fc.width=128;fc.height=128;
    const fg=fc.getContext('2d');fg.imageSmoothingEnabled=false;fg.drawImage(c,0,0);fg.scale(2,2);
    fg.clearRect(10,54,46,10);
    const cols=['#e9e6dc','#a9aab2','#514b54','#c8c5c4'];
-   for(let k=0;k<8;k++){
-    const a=legPoses[base][k],b=legPoses[next][k];
-    const q=a.map((v,j)=>Math.round(v+(b[j]-v)*t));
-    fg.fillStyle=cols[k%4];fg.fillRect(q[0],q[1],q[2],q[3]);
-   }
-   fg.fillStyle='#fffdf4';
-   fg.fillRect(24+(n%4),56,2,3);fg.fillRect(39-(n%4),56,2,3);
-   // 腰布と道着の揺れを少し加える
-   fg.fillStyle='#a9aab2';fg.fillRect(27,51+(n%4===0?1:0),17,1);
+   for(let k=0;k<8;k++){const q=legPoses[n][k];fg.fillStyle=cols[k%4];fg.fillRect(q[0],q[1],q[2],q[3]);}
+   fg.fillStyle='#fffdf4';fg.fillRect(24+(n*2)%5,56,2,3);fg.fillRect(39-(n*2)%5,56,2,3);
    drawPlayer.frames.push(fc);
   }
   drawPlayer.sprite=drawPlayer.frames[0];
@@ -225,15 +214,6 @@ function drawEnemy(e){
  const w=boss?78:54,h=boss?88:64;
  const y=Math.round(ground-h+(e.yoff||0)+bob),cx=x+w/2;
  if(x<-110||x>W+110)return;
- if(k===25){
-   if(bluePuniImage.complete&&bluePuniImage.naturalWidth){
-     const sw=70,sh=64,sy=y+h-sh;
-     ctx.imageSmoothingEnabled=false;
-     ctx.drawImage(bluePuniImage,x+(w-sw)/2,sy,sw,sh);
-   }
-   block(x,y-17,w,4,'#302536');block(x,y-17,w*Math.max(0,e.hp/e.max),4,'#e85b62');
-   return;
- }
  const palettes=[
  ['#7299a8','#d5e8df','#344d63'],['#66ad75','#c7e9a1','#365b42'],['#8055a6','#e5c5f3','#45305d'],
  ['#54b8c4','#c4f5eb','#24566a'],['#629b78','#d5e6a2','#355b49'],['#4b83b5','#b3dcf2','#293e69'],
@@ -242,17 +222,14 @@ function drawEnemy(e){
  ['#696b87','#c5c9e2','#373950'],['#d99a55','#ffe4a1','#70452e'],['#b64f78','#f4b6ca','#66334b'],
  ['#83ad62','#d7eea5','#49613c'],['#9c72ae','#e7c9f2','#563c67'],['#548d70','#b8e2b4','#315644'],
  ['#56b9cc','#c8f6f1','#25596a'],['#c4a66d','#f5e3b8','#6a5437'],['#c9b7d9','#fff0df','#64516f'],
- ['#e16a42','#ffd18a','#77392c'],['#b6ae5b','#f0e8a0','#5d5833'],['#655875','#c5b3d8','#393148'],['#bdc7d2','#f4eee2','#59616d'],['#258de8','#a9e5ff','#1451b2']
+ ['#e16a42','#ffd18a','#77392c'],['#b6ae5b','#f0e8a0','#5d5833'],['#655875','#c5b3d8','#393148'],['#bdc7d2','#f4eee2','#59616d']
  ];
  const p=palettes[k%palettes.length],c=p[0],light=p[1],shade=p[2];
  const block=(xx,yy,ww,hh,col)=>rect(Math.round(xx),Math.round(yy),Math.max(1,Math.round(ww)),Math.max(1,Math.round(hh)),col);
  // ぷにっとした輪郭と短い手足。敵ごとに頭身・シルエットを変える
  block(x+7,y+h-8,w-14,9,'#171722');
- const roundBody=[0,1,3,6,8,13,16,18,22,25].includes(k);
- if(k===25){
-   block(x+18,y+2,w-36,8,c);block(x+12,y+8,w-24,8,c);block(x+7,y+16,w-14,15,c);block(x+4,y+29,w-8,17,c);block(x+7,y+44,w-14,10,c);block(x+13,y+54,w-26,3,c);
-   block(x+20,y+5,7,7,light);block(x+13,y+14,6,9,light);block(x+9,y+27,4,12,light);
- }else if(roundBody){
+ const roundBody=[0,1,3,6,8,13,16,18,22].includes(k);
+ if(roundBody){
    block(x+8,y+15,w-16,h-24,c);block(x+4,y+22,8,h-31,c);block(x+w-12,y+22,8,h-31,c);
  }else{
    block(x+10,y+18,w-20,h-27,c);block(x+5,y+25,9,13,c);block(x+w-14,y+25,9,13,c);
@@ -260,12 +237,6 @@ function drawEnemy(e){
  block(x+9,y+7,w-18,18,c);
  // 種族ごとの大きな特徴
  switch(k){
- case 25: // 青ぷに：画像左上の青いしずく型スライム
-   block(x+18,y+1,18,5,light);block(x+13,y+7,28,5,'#54baff');block(x+8,y+13,38,5,'#1678d5');
-   block(x+9,y+22,5,17,'#1767c0');block(x+w-14,y+22,5,17,'#1767c0');
-   block(x+14,y+43,26,5,'#1767c0');block(x+19,y+49,16,3,'#1451b2');
-   block(x+13,y+16,6,8,'#c9f2ff');block(x+18,y+12,4,5,'#e8fbff');
-   break;
  case 0: // 森こぞう：木の葉の帽子
    block(x+5,y+2,w-10,7,'#4f874e');block(x+12,y-5,10,9,'#79b85c');block(x+25,y-2,12,7,'#a3cb68');break;
  case 1: // 苔の妖：苔むした背中
@@ -309,14 +280,14 @@ function drawEnemy(e){
    block(x+5,y+8,w-10,8,'#ded36c');block(x+11,y+12,8,5,'#f7ef9b');block(x+28,y+11,8,6,'#f7ef9b');break;
  }
  // 顔：敵ごとに目の色と表情を変える
- const eyeY=k===25?y+27:y+17,eye= boss?7:6;
+ const eyeY=y+17,eye= boss?7:6;
  const eyeColor=[3,18].includes(k)?'#efffff':([9,10,11,21].includes(k)?'#fff1a0':'#fff4c4');
  block(x+12,eyeY,eye,eye,eyeColor);block(x+w-12-eye,eyeY,eye,eye,eyeColor);
  block(x+14,eyeY+1,3,eye-2,shade);block(x+w-11,eyeY+1,3,eye-2,shade);
  if([0,1,4,7,13,15,16,17,19,22].includes(k)){
    block(x+16,y+29,14,3,shade);block(x+19,y+28,8,2,light);
  }else{
-   if(k===25){block(x+20,y+39,14,2,'#a83c42');block(x+22,y+40,10,2,'#ff9b82');block(x+18,y+43,3,2,'#1767c0');block(x+33,y+43,3,2,'#1767c0')}else{block(x+17,y+30,12,4,'#3b2430');block(x+20,y+31,6,2,light);}
+   block(x+17,y+30,12,4,'#3b2430');block(x+20,y+31,6,2,light);
  }
  // 小さな手足と靴でモンスターらしい立体感
  block(x+10,y+h-10,8,7,shade);block(x+w-18,y+h-10,8,7,shade);
