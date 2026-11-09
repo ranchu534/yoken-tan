@@ -209,67 +209,92 @@ function drawPlayer(){
  ctx.restore();
 }
 function drawEnemy(e){
- const boss=!!e.boss, kind=e.kind||0;
- const x=Math.round(e.x-cam), bob=Math.sin((e.phase||0)*2)*1.5;
- const y=Math.round(ground-(boss?82:48)+(e.yoff||0)+bob);
- if(x<-100||x>W+100)return;
- const bw=boss?58:38,bh=boss?68:42;
+ const k=e.kind||0,boss=!!e.boss;
+ const x=Math.round(e.x-cam),bob=Math.sin((e.phase||0)*2)*2;
+ const w=boss?66:46,h=boss?76:54;
+ const y=Math.round(ground-h+(e.yoff||0)+bob),cx=x+w/2;
+ if(x<-110||x>W+110)return;
  const palettes=[
- ['#668a9d','#b9d8df','#283d59'],['#4b9a75','#a9d7a0','#254c3b'],['#6b3c8e','#d4a7e8','#291d42'],
- ['#4c9eb4','#a7f1ed','#19465b'],['#4b8b76','#b1d9a5','#233f38'],['#3979a8','#8ed4ed','#192f55'],
- ['#b28b54','#f0d59b','#54402c'],['#d0d0b2','#fff0c7','#4c5147'],['#8c5b9f','#d7a5e8','#34213f'],
- ['#c45b36','#ffb26c','#512a27'],['#a64a32','#ffc078','#45211f'],['#e17a35','#ffd16a','#55251d'],
- ['#55546e','#b4b6d4','#24263e'],['#d78b48','#ffe09a','#59352a'],['#9c3b62','#f0a2c0','#401b37'],
- ['#6d9b58','#c7e58a','#31452b'],['#8a5c9d','#d7b2e8','#382341'],['#416f58','#a5d8aa','#203d35'],
- ['#54b9cb','#b5f6ee','#16465b'],['#b69a64','#f3dfac','#51402e'],['#c7b4dc','#fff0d5','#544267'],
- ['#d85b36','#ffca70','#54221d'],['#a7a04d','#e8df8b','#444326'],['#51445f','#c3a9d4','#241d32'],['#b8c0ce','#f4e9dc','#41465c']
+ ['#7299a8','#d5e8df','#344d63'],['#66ad75','#c7e9a1','#365b42'],['#8055a6','#e5c5f3','#45305d'],
+ ['#54b8c4','#c4f5eb','#24566a'],['#629b78','#d5e6a2','#355b49'],['#4b83b5','#b3dcf2','#293e69'],
+ ['#d5a45e','#ffdf9b','#76502e'],['#d2d1b4','#fff0ca','#62614d'],['#a477b5','#e6c8ef','#543b65'],
+ ['#d66c45','#ffc17b','#713a31'],['#b85b43','#ffd08b','#61342d'],['#e58a3f','#ffe08a','#784126'],
+ ['#696b87','#c5c9e2','#373950'],['#d99a55','#ffe4a1','#70452e'],['#b64f78','#f4b6ca','#66334b'],
+ ['#83ad62','#d7eea5','#49613c'],['#9c72ae','#e7c9f2','#563c67'],['#548d70','#b8e2b4','#315644'],
+ ['#56b9cc','#c8f6f1','#25596a'],['#c4a66d','#f5e3b8','#6a5437'],['#c9b7d9','#fff0df','#64516f'],
+ ['#e16a42','#ffd18a','#77392c'],['#b6ae5b','#f0e8a0','#5d5833'],['#655875','#c5b3d8','#393148'],['#bdc7d2','#f4eee2','#59616d']
  ];
- const pal=palettes[kind%palettes.length],c=pal[0],hi=pal[1],dark=pal[2];
- const cx=x+bw/2;
- // 体の基本形を種類ごとに変える
- rect(x+5,y+bh-2,bw-10,7,'#171722');
- if([4,7,10,12,14,20,24].includes(kind)){
-   rect(x+7,y+15,bw-14,bh-17,c);rect(x+3,y+19,6,bh-24,c);rect(x+bw-9,y+19,6,bh-24,c);
- }else if([1,16,17,22].includes(kind)){
-   rect(x+8,y+12,bw-16,bh-12,c);rect(x+2,y+22,8,12,c);rect(x+bw-10,y+22,8,12,c);
- }else if([3,5,18].includes(kind)){
-   rect(x+5,y+17,bw-10,bh-19,c);rect(x+1,y+21,8,12,c);rect(x+bw-9,y+21,8,12,c);
+ const p=palettes[k%palettes.length],c=p[0],light=p[1],shade=p[2];
+ const block=(xx,yy,ww,hh,col)=>rect(Math.round(xx),Math.round(yy),Math.max(1,Math.round(ww)),Math.max(1,Math.round(hh)),col);
+ // ぷにっとした輪郭と短い手足。敵ごとに頭身・シルエットを変える
+ block(x+7,y+h-8,w-14,9,'#171722');
+ const roundBody=[0,1,3,6,8,13,16,18,22].includes(k);
+ if(roundBody){
+   block(x+8,y+15,w-16,h-24,c);block(x+4,y+22,8,h-31,c);block(x+w-12,y+22,8,h-31,c);
  }else{
-   rect(x+7,y+13,bw-14,bh-14,c);rect(x+4,y+7,bw-8,17,c);
+   block(x+10,y+18,w-20,h-27,c);block(x+5,y+25,9,13,c);block(x+w-14,y+25,9,13,c);
  }
- // 頭・顔の輪郭
- rect(x+6,y+5,bw-12,18,c);rect(x+9,y+2,bw-18,5,hi);
- // 種類別のシルエットと装備
- switch(kind){
- case 0: rect(x+7,y-5,5,12,dark);rect(x+bw-12,y-5,5,12,dark);rect(x+13,y+bh-3,5,9,dark);break;
- case 1: rect(x+3,y+8,7,7,hi);rect(x+bw-10,y+8,7,7,hi);rect(x+11,y+bh-5,5,8,'#66835a');break;
- case 2: case 11: case 14: rect(x+3,y-9,9,18,dark);rect(x+bw-12,y-9,9,18,dark);rect(x+2,y+24,8,15,c);rect(x+bw-10,y+24,8,15,c);break;
- case 3: case 18: rect(x+2,y+13,8,18,hi);rect(x+bw-10,y+13,8,18,hi);rect(x+12,y-7,5,10,'#d9ffff');rect(x+bw-17,y-7,5,10,'#d9ffff');break;
- case 4: rect(x+7,y-7,bw-14,9,hi);rect(x+2,y+12,8,14,dark);rect(x+bw-10,y+12,8,14,dark);rect(cx-4,y+bh-2,8,8,'#d7c78a');break;
- case 5: rect(x+4,y+1,bw-8,8,hi);rect(x+1,y+7,8,20,c);rect(x+bw-9,y+7,8,20,c);rect(cx-3,y-12,6,16,hi);break;
- case 6: rect(x+4,y-8,8,14,'#e8ad58');rect(x+bw-12,y-8,8,14,'#e8ad58');rect(cx-4,y-13,8,10,'#ffe7a4');break;
- case 7: rect(x+5,y-9,8,15,hi);rect(x+bw-13,y-9,8,15,hi);rect(x+2,y+bh-7,10,9,dark);rect(x+bw-12,y+bh-7,10,9,dark);break;
- case 8: rect(x+2,y-13,bw-4,12,'#bda4d1');rect(x+7,y-19,6,10,hi);rect(x+bw-13,y-19,6,10,hi);rect(cx-3,y+bh-3,6,14,dark);break;
- case 9: case 10: case 21: rect(x+3,y-7,8,16,'#ffb04b');rect(x+bw-11,y-7,8,16,'#ffb04b');rect(x+1,y+18,5,14,'#ff6b35');rect(x+bw-6,y+18,5,14,'#ff6b35');break;
- case 12: case 23: rect(x+4,y+8,7,21,'#25243a');rect(x+bw-11,y+8,7,21,'#25243a');rect(cx-3,y-10,6,14,hi);rect(cx-2,y+bh-3,5,11,dark);break;
- case 13: rect(x+7,y-10,7,15,hi);rect(x+bw-14,y-10,7,15,hi);rect(x+1,y+23,10,5,'#d85a35');rect(x+bw-11,y+23,10,5,'#d85a35');break;
- case 15: rect(x+2,y-7,7,15,'#493b32');rect(x+bw-9,y-7,7,15,'#493b32');rect(x-5,y+20,12,5,c);rect(x+bw-7,y+20,12,5,c);break;
- case 16: rect(x+7,y-13,5,18,'#d7e68a');rect(x+bw-12,y-13,5,18,'#a6c85c');rect(x+1,y+bh-4,10,8,'#b3c65a');rect(x+bw-11,y+bh-4,10,8,'#b3c65a');break;
- case 17: rect(x-3,y+13,10,19,'#244f61');rect(x+bw-7,y+13,10,19,'#244f61');rect(cx-3,y-8,6,12,'#9be9e6');break;
- case 19: rect(cx-8,y-18,16,8,'#d9c69a');rect(x+3,y-9,6,14,'#d9c69a');rect(x+bw-9,y-9,6,14,'#d9c69a');rect(cx-2,y+bh,5,10,'#5d4639');break;
- case 20: case 24: rect(x+4,y-8,bw-8,7,'#e5d8ae');rect(x+8,y+bh-3,5,12,'#ddd0aa');rect(x+bw-13,y+bh-3,5,12,'#ddd0aa');break;
- case 22: rect(x+8,y-10,6,15,'#d7e68a');rect(x+18,y-15,6,20,'#a6c85c');rect(x+bw-13,y-10,6,15,'#d7e68a');break;
+ block(x+9,y+7,w-18,18,c);
+ // 種族ごとの大きな特徴
+ switch(k){
+ case 0: // 森こぞう：木の葉の帽子
+   block(x+5,y+2,w-10,7,'#4f874e');block(x+12,y-5,10,9,'#79b85c');block(x+25,y-2,12,7,'#a3cb68');break;
+ case 1: // 苔の妖：苔むした背中
+   block(x+6,y+15,w-12,10,'#477f55');block(x+9,y+12,7,7,'#a7c879');block(x+28,y+11,9,8,'#a7c879');break;
+ case 2: // 森の大鬼
+   block(x+4,y-8,9,18,shade);block(x+w-13,y-8,9,18,shade);block(x+2,y+28,11,15,c);block(x+w-13,y+28,11,15,c);break;
+ case 3: case 18: // 水系：ヒレ
+   block(x+1,y+17,9,17,light);block(x+w-10,y+17,9,17,light);block(cx-4,y-7,8,12,light);block(cx-3,y-13,6,8,'#e8ffff');break;
+ case 4: // 河童：皿と甲羅
+   block(x+11,y-5,w-22,7,'#e3d88d');block(x+8,y+23,w-16,16,'#426d59');block(x+14,y+26,w-28,10,'#9acb8d');break;
+ case 5: // 川龍：角と長いヒゲ
+   block(x+8,y-7,7,15,light);block(x+w-15,y-7,7,15,light);block(x+1,y+20,12,3,light);block(x+w-13,y+20,12,3,light);break;
+ case 6: // 灯籠：火袋
+   block(x+8,y-5,w-16,7,'#8e6a42');block(x+12,y+22,w-24,15,'#ffe19a');block(x+17,y+26,w-34,7,'#ff9b45');break;
+ case 7: // 狛犬：耳とたてがみ
+   block(x+3,y+2,10,13,light);block(x+w-13,y+2,10,13,light);block(x+4,y+18,7,20,shade);block(x+w-11,y+18,7,20,shade);break;
+ case 8: // 社の怨霊：浮遊する布
+   block(x+3,y-5,w-6,8,light);block(x+6,y+h-18,7,15,light);block(x+w-13,y+h-18,7,15,light);block(cx-3,y-11,6,8,light);break;
+ case 9: case 10: case 21: // 炎系：炎の冠
+   block(x+8,y-7,8,15,'#ffb64e');block(x+19,y-13,8,20,'#ffe17a');block(x+30,y-6,8,14,'#ff8245');block(x+3,y+27,5,12,'#ff7842');block(x+w-8,y+27,5,12,'#ff7842');break;
+ case 11: // 業火鬼：巨大な角
+   block(x+3,y-12,11,23,shade);block(x+w-14,y-12,11,23,shade);block(x+1,y+30,12,16,c);block(x+w-13,y+30,12,16,c);break;
+ case 12: case 23: // 影：フード
+   block(x+5,y-5,w-10,12,'#343249');block(x+9,y+4,w-18,7,'#29263c');block(x+10,y+h-14,7,13,'#343249');block(x+w-17,y+h-14,7,13,'#343249');break;
+ case 13: // 妖狐：大きな耳と尾
+   block(x+7,y-10,8,18,light);block(x+w-15,y-10,8,18,light);block(x+w-5,y+25,12,8,'#e7a65d');block(x+w+2,y+18,7,8,'#f2d39b');break;
+ case 14: // 妖魔王：王冠と肩鎧
+   block(x+8,y-9,w-16,8,'#f3d078');block(x+11,y-15,6,9,'#fff0a2');block(cx-3,y-19,7,13,'#d9a84e');block(x+1,y+26,13,16,shade);block(x+w-14,y+26,13,16,shade);break;
+ case 15: // 弓使い：弓
+   block(x-4,y+15,5,27,'#8a633f');block(x-7,y+15,8,4,'#d7c18b');block(x+8,y+22,8,5,'#8a633f');break;
+ case 16: // 毒花蜘蛛：複数の脚
+   for(let q=0;q<4;q++){block(x+q*4,y+37,3,12,'#547d43');block(x+w-12+q*3,y+37,3,12,'#547d43')}
+   block(x+11,y-7,8,10,'#a6d46d');block(x+27,y-9,8,12,'#d3e78b');break;
+ case 17: // 沼ぬし：泥の甲羅
+   block(x+5,y+17,w-10,14,'#385b48');block(x+11,y+19,w-22,8,'#a2ad68');block(x+5,y+36,8,8,'#385b48');block(x+w-13,y+36,8,8,'#385b48');break;
+ case 19: // からかさ小僧：傘
+   block(cx-3,y-14,6,20,'#72563c');block(x+4,y-13,w-8,5,'#d9c48d');block(x+8,y-9,5,7,'#d9c48d');block(x+w-13,y-9,5,7,'#d9c48d');block(cx-2,y+h-8,5,9,'#6a4c38');break;
+ case 20: case 24: // 骸骨・式鬼：骨の飾り
+   block(x+7,y+3,w-14,5,'#eee2c7');block(x+10,y+34,6,10,'#eee2c7');block(x+w-16,y+34,6,10,'#eee2c7');break;
+ case 22: // 溶岩なめくじ：ぬめる背中
+   block(x+5,y+8,w-10,8,'#ded36c');block(x+11,y+12,8,5,'#f7ef9b');block(x+28,y+11,8,6,'#f7ef9b');break;
  }
- // 目・表情
- const eyeY=y+13,eyeSize=boss?7:5;
- rect(x+10,eyeY,eyeSize,eyeSize,'#fff2b0');rect(x+bw-10-eyeSize,eyeY,eyeSize,eyeSize,'#fff2b0');
- rect(x+11,eyeY+1,2,eyeSize-2,dark);rect(x+bw-9,eyeY+1,2,eyeSize-2,dark);
- if([15,20,21,23,24].includes(kind)){rect(x+9,y+22,8,3,dark);rect(x+bw-17,y+22,8,3,dark)}
- if([9,10,11,21].includes(kind)){rect(cx-5,y+27,10,4,'#ffdd72');}
- if(boss){rect(x+4,y+31,bw-8,5,hi);rect(x+8,y+bh-5,8,10,dark);rect(x+bw-16,y+bh-5,8,10,dark)}
- // HPゲージ
- rect(x,y-13,bw,4,'#342b3a');rect(x,y-13,bw*Math.max(0,e.hp/e.max),4,'#d94e5b');
- if(boss)text(e.name,x-4,y-21,11,'#ffd78b');
+ // 顔：敵ごとに目の色と表情を変える
+ const eyeY=y+17,eye= boss?7:6;
+ const eyeColor=[3,18].includes(k)?'#efffff':([9,10,11,21].includes(k)?'#fff1a0':'#fff4c4');
+ block(x+12,eyeY,eye,eye,eyeColor);block(x+w-12-eye,eyeY,eye,eye,eyeColor);
+ block(x+14,eyeY+1,3,eye-2,shade);block(x+w-11,eyeY+1,3,eye-2,shade);
+ if([0,1,4,7,13,15,16,17,19,22].includes(k)){
+   block(x+16,y+29,14,3,shade);block(x+19,y+28,8,2,light);
+ }else{
+   block(x+17,y+30,12,4,'#3b2430');block(x+20,y+31,6,2,light);
+ }
+ // 小さな手足と靴でモンスターらしい立体感
+ block(x+10,y+h-10,8,7,shade);block(x+w-18,y+h-10,8,7,shade);
+ if(boss){block(x+5,y+38,w-10,6,light);block(x+8,y+h-9,12,10,shade);block(x+w-20,y+h-9,12,10,shade);}
+ // HPゲージとボス名
+ block(x,y-17,w,4,'#302536');block(x,y-17,w*Math.max(0,e.hp/e.max),4,'#e85b62');
+ if(boss)text(e.name,x-4,y-25,11,'#ffe09a');
 }function draw(){ctx.clearRect(0,0,W,H);drawBg();for(const e of enemies)if(e.hp>0)drawEnemy(e);for(const s of shots){rect(s.x-cam,s.y,18,8,'#6ce7e8');rect(s.x-cam+4,s.y-3,8,14,'#d4ffff')}for(const s of hostileShots){rect(s.x-cam,s.y,14,9,s.color||'#ff835e');rect(s.x-cam+4,s.y-3,6,15,'#ffe2a1')}drawPlayer();for(const q of particles)rect(q.x-cam,q.y,3,3,q.color);for(const w of waves){ctx.beginPath();ctx.strokeStyle=`rgba(255,225,150,${Math.max(0,w.life/24)})`;ctx.lineWidth=5;ctx.arc(w.x-cam,w.y,w.r,Math.PI,Math.PI*2);ctx.stroke()}if(shake>0)shake--}
 function update(dt){if(!started||won||lost)return;let p=player;const step=dt/16.67;p.anim+=step;p.atkcd=Math.max(0,p.atkcd-step);p.spcd=Math.max(0,p.spcd-step);p.tenpuCd=Math.max(0,p.tenpuCd-step);p.dashCd=Math.max(0,p.dashCd-step);p.dashTimer=Math.max(0,p.dashTimer-step);p.atk=Math.max(0,p.atk-step);p.inv=Math.max(0,p.inv-step);p.vx=(keys.right?2.7:0)-(keys.left?2.7:0);if(p.vx)p.face=Math.sign(p.vx);if(keys.dash&&p.dashCd<=0){keys.dash=false;p.dashTimer=7;p.dashCd=48;p.dashSpeed=8.5;p.inv=Math.max(p.inv,7);burst(p.x+15,p.y+30,"#9edbff",10)}if(p.dashTimer>0){p.vx=p.face*p.dashSpeed;p.dashSpeed*=Math.pow(.82,step)}p.x=Math.max(0,Math.min(worldW-p.w,p.x+p.vx*step));if(keys.tenpu&&p.on&&p.tenpuCd<=0&&p.ki>=30){keys.tenpu=false;p.ki-=30;p.tenpuCd=360;p.tenpu=1;p.vy=-17;p.on=false;burst(p.x+15,p.y+42,"#d9b6ff",18)}if(p.tenpu===1&&p.vy>=-1){p.tenpu=2;p.vy=13;burst(p.x+15,p.y+25,"#e8c9ff",12)}if((keys.smallJump||keys.bigJump)&&p.on){p.vy=keys.bigJump?-12.2:-7.0;p.on=false;burst(p.x+15,p.y+45,keys.bigJump?'#ffe27a':'#d7c18b',keys.bigJump?9:4)}const prevBottom=p.y+p.h;p.vy+=.42*step;p.y+=p.vy*step;p.on=false;let landing=ground;for(const pl of stagePlatforms[stageIndex]||[]){const top=ground+pl[1];if(p.vy>=0&&prevBottom<=top+5&&p.y+p.h>=top&&p.x+p.w>pl[0]&&p.x<pl[0]+pl[2]&&top<landing)landing=top}if(p.y+p.h>=landing){p.y=landing-p.h;p.vy=0;p.on=true;if(p.tenpu===2){p.tenpu=0;shake=13;waves.push({x:p.x+15,y:landing,r:12,life:24});burst(p.x+15,landing,"#ffe39b",30);for(const e of enemies){if(e.hp>0&&Math.abs((e.x+16)-(p.x+15))<235){e.hp-=65;burst(e.x+16,ground-25,"#e5c5ff",16);if(e.hp<=0){kills++;gainExp(e.boss?150:30);burst(e.x+15,ground-25,"#b6e6d5",18)}}}msg.textContent="天斧！！";}}
  if(keys.attack&&p.atkcd<=0){p.atk=10;p.atkcd=22;for(const e of enemies){if(e.hp>0&&Math.abs((e.x+15)-(p.x+p.w/2+p.face*30))<48&&Math.abs(e.x-p.x)<75){e.hp-=18;burst(e.x+15,ground-25,'#ffcf8a',9);if(e.hp<=0){kills++;gainExp(e.boss?150:30);burst(e.x+15,ground-25,'#b6e6d5',18)}}}}
