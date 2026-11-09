@@ -197,10 +197,10 @@ function drawPlayer(){
   }
   drawPlayer.sprite=drawPlayer.frames[0];
  }
- const destW=48,destH=48;const sprite=(moving?drawPlayer.frames?.[frame]:null)||drawPlayer.sprite;
+ const destW=56,destH=56;const sprite=(moving?drawPlayer.frames?.[frame]:null)||drawPlayer.sprite;
  ctx.save();ctx.imageSmoothingEnabled=false;
  ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x+p.w/2,y+p.h+1,17,3,0,0,Math.PI*2);ctx.fill();
- if(p.dashTimer>0){ctx.globalAlpha=.28;ctx.drawImage(sprite,x-9-p.face*7,y-1,48,48);ctx.globalAlpha=1}
+ if(p.dashTimer>0){ctx.globalAlpha=.28;ctx.drawImage(sprite,x-12-p.face*8,y-2,56,56);ctx.globalAlpha=1}
  ctx.translate(x+p.w/2,y+p.h/2+(moving?Math.abs(Math.sin(p.anim*.42))*1.2:0));
  ctx.scale(p.face||1,1);
  if(air)ctx.rotate(-.08);
@@ -211,7 +211,7 @@ function drawPlayer(){
 function drawEnemy(e){
  const k=e.kind||0,boss=!!e.boss;
  const x=Math.round(e.x-cam),bob=Math.sin((e.phase||0)*2)*2;
- const w=boss?66:46,h=boss?76:54;
+ const w=boss?78:54,h=boss?88:64;
  const y=Math.round(ground-h+(e.yoff||0)+bob),cx=x+w/2;
  if(x<-110||x>W+110)return;
  const palettes=[
@@ -292,6 +292,22 @@ function drawEnemy(e){
  // 小さな手足と靴でモンスターらしい立体感
  block(x+10,y+h-10,8,7,shade);block(x+w-18,y+h-10,8,7,shade);
  if(boss){block(x+5,y+38,w-10,6,light);block(x+8,y+h-9,12,10,shade);block(x+w-20,y+h-9,12,10,shade);}
+ // 細かな模様・質感：鎧の縁、体の斑点、鱗や毛並み
+ if([4,5,17,18,22].includes(k)){
+   for(let q=0;q<3;q++){block(x+12+q*8,y+34+(q%2)*5,5,3,light);block(x+w-17-q*8,y+39+(q%2)*4,4,3,shade)}
+ }
+ if([7,10,11,14,20,24].includes(k)){
+   block(x+8,y+27,5,12,light);block(x+w-13,y+27,5,12,light);
+   block(x+13,y+43,w-26,3,shade);
+ }
+ if([0,1,6,9,15,16,19,21].includes(k)){
+   block(x+13,y+35,4,3,light);block(x+w-17,y+37,4,3,light);
+   block(x+19,y+45,3,2,shade);block(x+w-22,y+45,3,2,shade);
+ }
+ // 目元の眉・頬・小さな口を描き足して表情をくっきり
+ block(x+10,y+14,10,2,shade);block(x+w-20,y+14,10,2,shade);
+ block(cx-4,y+33,8,2,shade);
+ if(boss){block(x+15,y+51,w-30,4,light);block(x+19,y+57,5,5,shade);block(x+w-24,y+57,5,5,shade)}
  // HPゲージとボス名
  block(x,y-17,w,4,'#302536');block(x,y-17,w*Math.max(0,e.hp/e.max),4,'#e85b62');
  if(boss)text(e.name,x-4,y-25,11,'#ffe09a');
